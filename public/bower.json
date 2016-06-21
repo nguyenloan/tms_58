@@ -1,0 +1,26 @@
+{
+  "name": "bower",
+  "homepage": "https://github.com/NguyenQuynh1994/tms_58",
+  "description": "tms_58",
+  "main": "",
+  "keywords": [
+    "tms58"
+  ],
+  "authors": [
+    "NguyenQuynh1994 <nguyenquynh281194@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.3",
+    "jquery": "^2.2.4",
+    "metisMenu": "^2.5.2"
+  }
+}
