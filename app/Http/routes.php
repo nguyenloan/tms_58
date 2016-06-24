@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Authentication routes...
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::post('login', 'Auth\AuthController@postLogin');
+    Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
+    // Registration routes...
+    Route::get('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@getRegister']);
+    Route::post('register', 'Auth\AuthController@postRegister');
+});
+Route::group(['prefix' => 'password'], function () {
+    Route::get('email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@getEmail']);
+    Route::post('email', ['uses' => 'Auth\PasswordController@postEmail']);
+    // Password reset routes...
+    Route::get('reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
+    Route::post('reset', 'Auth\PasswordController@postReset');
+});
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('users', 'UserController');
 });
