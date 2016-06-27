@@ -23,14 +23,14 @@ abstract class BaseRepository
         $filter = isset($options['filter']) ? $options['filter'] : config('common.base_repository.filter');
         $data['rows'] = $this->model->where($filter)->orderBy($order['key'], $order['aspect'])->paginate($limit);
 
-        if (count($data['rows']) === 0) {
+        if (!count($data['rows'])) {
             throw new Exception(trans('general/message.item_not_exist'));
         }
 
         $data['subject'] = $subject;
         $data['buttons'] = isset($options['buttons']) ? $options['buttons'] : config('common.base_repository.buttons');
         $data['columns'] = isset($options['columns']) ? $options['columns'] : $this->model->getFillable();
-        $data['alerts'] = config('common.base_repository.alerts');
+        array_unshift($data['columns'], 'id');
         $data['ids'] = [];
         foreach ($data['rows'] as $key => $row) {
             $data['ids'][$key] = $row['id'];
@@ -55,7 +55,7 @@ abstract class BaseRepository
     {
         $data = $this->model->create($input);
 
-        if ($data === 0) {
+        if (!$data) {
             throw new Exception(trans('general/message.create_error'));
         }
 
@@ -68,7 +68,7 @@ abstract class BaseRepository
         $attributes = isset($options['attributes']) ? $options['attributes'] : config('common.base_repository.attributes');
         $data = $this->model->where($filter)->get($attributes);
 
-        if (count($data) === 0) {
+        if (!count($data)) {
             throw new Exception(trans('general/message.data_empty'));
         }
 
@@ -79,7 +79,7 @@ abstract class BaseRepository
     {
         $data = $this->model->where('id', $id)->update($input);
 
-        if ($data === 0) {
+        if (!$data) {
             throw new Exception(trans('general/message.update_error'));
         }
 
@@ -92,7 +92,7 @@ abstract class BaseRepository
             DB::beginTransaction();
             $data = $this->model->destroy($ids);
 
-            if ($data === 0) {
+            if (!$data) {
                 throw new Exception(trans('general/message.delete_error'));
             }
 

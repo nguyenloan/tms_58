@@ -13,6 +13,11 @@ return [
         'follow' => 'follow',
         'unfollow' => 'unfollow',
     ],
+    'subject' => [
+        'rule' => [
+            'name_max' => 120,
+        ],
+    ],
     'layout' => [
         'general' => 'layout.layout',
     ],
