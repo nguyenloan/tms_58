@@ -1,0 +1,24 @@
+{
+  "name": "loannguyen",
+  "description": "tms_58",
+  "main": "",
+  "authors": [
+    "loanguyen <nguyen.thi.thanh.loan@framgia.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "tms58"
+  ],
+  "homepage": "https://github.com/nguyenloan/tms_58",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.6.3"
+  }
+}
