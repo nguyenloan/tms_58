@@ -15,6 +15,9 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
+    Route::group(['prefix' => 'admin'], function(){
+        Route::resource('subjects', 'Suppervisor\SubjectController');
+    });
 });
 Route::auth();
 Route::get('home', ['middleware' => 'auth', 'as' => 'home', 'uses' => 'HomeController@index']);

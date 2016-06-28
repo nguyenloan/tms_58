@@ -13,7 +13,7 @@
     <div class="col-sm-offset-2 col-sm-8">
         <section>
             @include('layout.result')
-            @yield("content")
+            @yield('content')
         </section>
     </div>
     @include('layout.scripts')

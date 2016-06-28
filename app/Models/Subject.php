@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Models\Course;
-use Models\User;
-use Models\Task;
+use App\Models\Course;
+use App\Models\User;
+use App\Models\Task;
 
 class Subject extends Model
 {
+
     protected $fillable = [
         'name', 'description',
     ];
