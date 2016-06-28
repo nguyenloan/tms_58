@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Http\Requests\LoginRequest;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -29,7 +31,7 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
-
+    protected $redirectPath = '/home';
     /**
      * Create a new authentication controller instance.
      *
@@ -37,7 +39,6 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
     /**
@@ -68,5 +69,25 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    protected function getLogin()
+    {
+        return view('auth.login');
+    }
+
+    protected function postLogin(LoginRequest $request)
+    {
+        $auth = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+        $remember = $request->remember;
+
+        if (Auth::attempt($auth, $remember)) {
+            return redirect()->route('home');
+        } else {
+            return redirect()->route('getLogin');
+        }
     }
 }
