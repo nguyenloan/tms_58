@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * Course: luongs3
- * Date: 5/10/2016
- * Time: 11:55 AM
- */
 
 namespace App\Repositories\Course;
 
