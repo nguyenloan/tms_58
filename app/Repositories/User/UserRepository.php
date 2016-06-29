@@ -22,10 +22,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function update($input, $id)
     {
-        try {
             $input['id'] = $id;
 
-            $input = $this->update($input, $id);
+            $input = $this->uploadImage($input, $id);
             $data = $this->model->where('id', $id)->update($input);
 
             if ($data === 0) {
@@ -33,9 +32,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             }
 
             return $data;
-        } catch (Exception $e) {
-            throw $e;
-        }
     }
 
     public function uploadImage($input, $id)

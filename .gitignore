@@ -10,3 +10,4 @@ composer.lock
 .idea
 _ide_helper.php
 storage/
+public/upload/
