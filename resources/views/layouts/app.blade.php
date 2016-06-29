@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ trans('settings.title') }}</title>
     <!-- Fonts -->
-    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="/bower_components/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="/bower/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/bower/font-awesome/css/font-awesome.css"/>
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
-    <link rel="stylesheet" type="text/css" href="/bower_components/font-awesome/css/landing_page.css"/>
+    <link rel="stylesheet" type="text/css" href="/bower/font-awesome/css/landing_page.css"/>
     @yield('css')
 </head>
 <body id="app-layout">

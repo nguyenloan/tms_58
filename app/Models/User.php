@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Models\Course;
-use Models\Subject;
-use Models\Task;
-use Models\DailyReport;
-use Models\Activity;
+use App\Models\Course;
+use App\Models\Subject;
+use App\Models\Task;
+use App\Models\DailyReport;
+use App\Models\Activity;
 
 class User extends Authenticatable
 {
@@ -33,7 +33,7 @@ class User extends Authenticatable
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'user_courses');
+        return $this->belongsToMany(Course::class, 'user_courses', 'user_id', 'course_id');
     }
 
     public function subjects()

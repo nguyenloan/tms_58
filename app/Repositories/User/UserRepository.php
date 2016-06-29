@@ -62,4 +62,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $input;
     }
+
+    public function listSupervisor()
+    {
+        $data = $this->model->where('role', User::ROLE_SUPERVISOR)
+            ->lists('name', 'id');
+
+        return $data;
+    }
 }

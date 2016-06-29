@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Subject;
 use App\Models\User;
+use App\Models\CourseSubject;
 
 class Course extends Model
 {

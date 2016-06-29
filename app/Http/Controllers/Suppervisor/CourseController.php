@@ -6,17 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CreateCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Http\Requests\AddSuppervisorRequest;
 use App\Models\Course;
+use App\Models\Subject;
+use App\Models\User;
+use App\Models\CourseSubject;
 
 class CourseController extends Controller
 {
     private $courseRepository;
+    private $userRepository;
 
-    public function __construct(CourseRepositoryInterface $courseRepository)
+    public function __construct(
+        CourseRepositoryInterface $courseRepository,
+        UserRepositoryInterface $userRepository
+    )
     {
         $this->courseRepository = $courseRepository;
+        $this->userRepository = $userRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +57,7 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(CreateCourseRequest $request)
     {
         $course = [
@@ -71,7 +84,9 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        $course = $this->courseRepository->find($id);
+
+        return view('suppervisor.course.show', compact('course'));
     }
 
     /**
@@ -117,6 +132,31 @@ class CourseController extends Controller
         } catch (Exception $e) {
 
             return redirect()->route('admin.courses.index')->withError($e->getMessage());
+        }
+    }
+    public function addSuppervisor($id)
+    {
+        $suppervisor = $this->userRepository->listSupervisor();
+        $course = $this->courseRepository->find($id);
+
+        return view('suppervisor.course.add_supper', compact('course', 'suppervisor'));
+    }
+
+    public function createSupper(AddSuppervisorRequest $request)
+    {
+        $newSuppervisor = [
+            'user_id' => $request->user_id,
+            'course_id' => $request->course_id
+        ];
+
+        try {
+            $data = $this->courseRepository->addSuppervisor($newSuppervisor);
+
+            return redirect()->route('admin.courses.index')->with([
+                'message' => trans('settings.create_success')
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('admin.course.index')->withError($e->getMessage());
         }
     }
 }
