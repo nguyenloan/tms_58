@@ -1,6 +1,3 @@
-/**
- * Created by luongs3 on 5/9/2016.
- */
 $(document).ready(function () {
     $.ajaxSetup({
         beforeSend: function (xhr, settings) {
@@ -18,7 +15,6 @@ $(document).ready(function () {
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     $("#image").change(function () {
         $('#image_hidden').val('');
         readURL(this);
@@ -66,8 +62,7 @@ $(document).ready(function () {
             alert($(this).data('check'));
             return false;
         }
-        $.ajax(
-        {
+        $.ajax({
             type: 'put',
             url: $(this).data('url'),
             data: {
@@ -76,7 +71,30 @@ $(document).ready(function () {
             success: function (data, status) {
                 location.reload(true);
             }
-        }
-        );
+        });
+    });
+    $('.new-option').on('click',function(event){
+        parent = $(this).prev();
+        newOption = parent.find('.col-md-10').clone();
+        parent = parent.prev().find('.col-md-10');
+        no = parent.find('.task-name').last().attr('id').split('-')[1];
+        no = parseInt(no) + 1;
+        newOption.find('.task-name').attr({name: 'name-' + no, id: 'name-' + no});
+        newOption.find('.task-description').attr({name: 'description-' + no, id: 'description-' + no});
+        newOption.find('.task-remove').attr({id: 'remove-' + no});
+        parent.append(newOption.children());
+        event.preventDefault();
+    });
+    $("#option-wrap").on('click','.task-remove',function(event){
+        event.preventDefault();
+        no = $(this).attr('id').split('-')[1];
+        $("#name-" + no).remove();
+        $("#description-" + no).remove();
+        $("#remove-" + no).remove();
+    });
+    $('#create-subject').submit(function(event){
+        subparent = $(this).find('#option-wrap');
+        no = subparent.find('.task-name').last().attr('id').split('-')[1];
+        $("#option-count").val(parseInt(no));
     });
 });

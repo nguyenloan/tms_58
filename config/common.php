@@ -18,6 +18,11 @@ return [
             'name_max' => 120,
         ],
     ],
+    'task' => [
+        'rule' => [
+            'name_max' => 120,
+        ],
+    ],
     'course' => [
         'rule' => [
             'name_max' => 200,

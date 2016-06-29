@@ -19,13 +19,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');
     Route::group(['prefix' => 'admin'], function () {
-    Route::resource('subjects', 'Suppervisor\SubjectController');
-    Route::get('courses/addSuppervisor/{id}', 'Suppervisor\CourseController@addSuppervisor');
-    Route::post('courses/addSuppervisor', [
-        'as' => 'addSuppervisor',
-        'uses' => 'Suppervisor\CourseController@createSupper'
-    ]);
-    Route::resource('courses', 'Suppervisor\CourseController');
+        Route::resource('subjects', 'Suppervisor\SubjectController');
+        Route::get('courses/addSuppervisor/{id}', 'Suppervisor\CourseController@addSuppervisor');
+        Route::post('courses/addSuppervisor', [
+            'as' => 'addSuppervisor',
+            'uses' => 'Suppervisor\CourseController@createSupper'
+        ]);
+        Route::resource('courses', 'Suppervisor\CourseController');
+        Route::resource('tasks', 'Suppervisor\TaskController');
     });
 });
 Route::auth();
@@ -38,5 +39,4 @@ Route::post('authen/login', [
     'as' => 'postLogin',
     'uses' => 'Auth\AuthController@postLogin'
 ]);
-
 

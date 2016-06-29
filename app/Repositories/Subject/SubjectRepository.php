@@ -9,6 +9,7 @@ use Exception;
 use App\Models\Task;
 use App\Models\UserSubject;
 use Auth;
+use DB;
 
 class SubjectRepository extends BaseRepository implements SubjectRepositoryInterface
 {
@@ -85,6 +86,31 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
         $subject['tasks'] = $tasks;
 
         return $subject;
+    }
+
+    public function delete($ids)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->model->destroy($ids);
+
+            if (!$data) {
+                throw new Exception(trans('general/message.delete_error'));
+            }
+
+            if (is_array($ids)) {
+                $task = Task::whereIn('subject_id', $ids)->delete();
+            } else {
+                $task = Task::where('subject_id', $ids)->delete();
+            }
+
+            DB::commit();
+
+            return $data;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }
 
