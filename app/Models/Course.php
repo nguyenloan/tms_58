@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Models\Subject;
-use Models\User;
+use App\Models\Subject;
+use App\Models\User;
 
 class Course extends Model
 {
