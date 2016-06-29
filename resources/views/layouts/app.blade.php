@@ -32,6 +32,9 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">{{ trans('settings.home') }}</a></li>
+                    @if (Auth::check())
+                        <li><a href="{{ url('/course') }}">{{ trans('settings.course') }}</li>
+                    @endif
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">

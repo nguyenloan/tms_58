@@ -18,6 +18,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('courses', 'CourseController');
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('subjects', 'Suppervisor\SubjectController');
+        Route::resource('courses', 'Suppervisor\CourseController');
     });
 });
 Route::auth();
@@ -30,4 +31,5 @@ Route::post('authen/login', [
     'as' => 'postLogin',
     'uses' => 'Auth\AuthController@postLogin'
 ]);
+
 

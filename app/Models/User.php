@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activity::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->role == User::ROLE_SUPERVISOR;
+    }
 }

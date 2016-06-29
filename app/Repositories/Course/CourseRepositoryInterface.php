@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * Course: luongs3
- * Date: 5/10/2016
- * Time: 11:54 AM
- */
 namespace App\Repositories\Course;
 
 interface CourseRepositoryInterface
