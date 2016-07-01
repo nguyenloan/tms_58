@@ -15,7 +15,9 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
-    Route::resource('courses', 'CourseController');
+    Route::resource('courses', 'Trainee\CourseController');
+    Route::resource('subjects', 'Trainee\SubjectController');
+    Route::resource('tasks', 'Trainee\TaskController');
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('subjects', 'Suppervisor\SubjectController');
         Route::resource('courses', 'Suppervisor\CourseController');

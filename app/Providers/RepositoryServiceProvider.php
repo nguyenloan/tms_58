@@ -10,6 +10,8 @@ use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Task\TaskRepository;
+use App\Repositories\Task\TaskRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,6 @@ class RepositoryServiceProvider extends ServiceProvider
         App::bind(UserRepositoryInterface::class, UserRepository::class);
         App::bind(SubjectRepositoryInterface::class, SubjectRepository::class);
         App::bind(CourseRepositoryInterface::class, CourseRepository::class);
+        App::bind(TaskRepositoryInterface::class, TaskRepository::class);
     }
 }

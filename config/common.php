@@ -47,4 +47,10 @@ return [
             ]
         ],
     ],
+    'user_task' => [
+        'status' => [
+            'training' => 0,
+            'finish' => 1,
+        ]
+    ]
 ];
