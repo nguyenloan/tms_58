@@ -38,4 +38,9 @@ return [
     'description_placeholder' => 'Please, input Description',
     'remove_option' => 'Remove task',
     'new_option' => 'New task',
+    'course_trainee' => 'Course #:course',
+    'trainees' => 'Trainees',
+    'enroll' => 'Enroll',
+    'course_activities' => 'Course Activities',
+    
 ];

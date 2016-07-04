@@ -9,4 +9,12 @@ return [
     'delete_error' => 'Delete subject fail',
     'create_task_success' => 'Create new task successfully',
     'update_task_successfully' => 'Update task successfully',
+    'start_course_activity' => ':user start the course',
+    'finish_course_activity' => ':user finish the course',
+    'start_subject_activity' => ':user start the subject :subject',
+    'finish_subject_activity' => ':user finish the subject :subject',
+    'complete_task_activity' => ':user complete the task :task',
+    'enroll_course_successfully' => 'Enroll this course successfully',
+    'duplicated_event' => 'Duplicated event',
+    'enrolled_this_course' => 'You have enrolled this course',
 ];

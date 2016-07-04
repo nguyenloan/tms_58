@@ -32,7 +32,7 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -43,6 +43,28 @@ class CourseController extends Controller
             return view('course.show', compact('course'));
         } catch (Exception $ex) {
             return redirect()->route('courses.index')->withError($ex->getMessage());
+        }
+    }
+
+    public function trainees($courseId)
+    {
+        try {
+            $course = $this->courseRepository->trainees($courseId);
+
+            return view('course.trainee', compact('course'));
+        } catch (Exception $ex) {
+            return redirect()->route('courses.index')->withError($ex->getMessage());
+        }
+    }
+
+    public function enroll($courseId)
+    {
+        try {
+            $data = $this->courseRepository->enroll($courseId);
+
+            return redirect()->route('courses.show', ['id' => $courseId])->withSuccess(trans('general/message.enroll_course_successfully'));
+        } catch (Exception $ex) {
+            return redirect()->route('courses.show', ['id' => $courseId])->withError($ex->getMessage());
         }
     }
 }
