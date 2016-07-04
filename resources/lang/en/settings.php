@@ -39,4 +39,12 @@ return [
     'name_course' => 'Name Course',
     'save' => 'Save',
     'create_success' => 'Create Success',
+    'edit_success' => 'Edit Success',
+    'edit_course' => 'Edit Course',
+    'details_course' => 'Details Of Course',
+    'subject_of_course' => 'Subject Of Course',
+    'name_subject' => 'Name subject',
+    'description_subject' => 'Description Subject',
+    'supervisor' => 'Supervisor',
+    'add_suppervisor' => 'Add Suppervisor',
 ];
