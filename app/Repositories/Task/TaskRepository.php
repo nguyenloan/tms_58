@@ -11,9 +11,9 @@ use Request;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 {
-    public function __construct(Task $subject)
+    public function __construct(Task $task)
     {
-        $this->model = $subject;
+        $this->model = $task;
     }
 
     public function updateTaskStatus($input, $ids)
@@ -32,5 +32,26 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 
         return $data;
     }
-}
 
+    public function find($id = null)
+    {
+        $data = $this->model->find($id);
+
+        if (!$data) {
+            throw new Exception("general/message.item_not_exist");
+        }
+
+        return $data;
+    }
+
+    public function store($inputs)
+    {
+        $data = $this->model->insert($inputs);
+
+        if (!$data) {
+            throw new Exception(trans('general/message.create_error'));
+        }
+
+        return $data;
+    }
+}

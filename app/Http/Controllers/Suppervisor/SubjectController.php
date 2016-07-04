@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Suppervisor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Subject\SubjectRepositoryInterface;
+use App\Repositories\Task\TaskRepositoryInterface;
 use Exception;
 use App\Http\Requests\CreateSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
@@ -13,10 +14,12 @@ use App\Http\Requests;
 class SubjectController extends Controller
 {
     private $subjectRepository;
+    private $taskRepository;
 
-    public function __construct(SubjectRepositoryInterface $subjectRepository)
+    public function __construct(SubjectRepositoryInterface $subjectRepository, TaskRepositoryInterface $taskRepository)
     {
         $this->subjectRepository = $subjectRepository;
+        $this->taskRepository = $taskRepository;
     }
     /**
      * Display a listing of the resource.
@@ -50,11 +53,25 @@ class SubjectController extends Controller
     {
         $subject = [
             'name' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
         ];
 
         try {
             $data = $this->subjectRepository->store($subject);
+            $taskCount = $request->optionCount;
+            $itemTasks = [];
+
+            for ($i = 0; $i <= $taskCount; $i++) {
+                if ($request->has('name-' . $i)) {
+                    $itemTasks[] = [
+                        'name' => $request->get('name-' . $i),
+                        'description' => $request->get('description-' . $i),
+                        'subject_id' => $data->id,
+                    ];
+                }
+            }
+
+            $dataTask = $this->taskRepository->store($itemTasks);
 
             return redirect()->route('admin.subjects.index')->with([
                 'message' => trans('general/message.create_subject_success')
@@ -73,6 +90,7 @@ class SubjectController extends Controller
     public function show($id)
     {
         $subject = $this->subjectRepository->show($id);
+        session()->flash('subjectId', $id);
 
         if (!count($subject['tasks'])) {
 
@@ -137,6 +155,20 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (request()->has('ids')) {
+            $id = request()->get('ids');
+        }
+
+        try {
+            $data = $this->subjectRepository->delete($id);
+        } catch (Exception $e) {
+            session()->flash('error', $data['errors']['message']);
+
+            return response()->json(['success' => false]);
+        }
+
+        session()->flash('success', trans('general/message.delete_successfully'));
+
+        return response()->json(['success' => true]);
     }
 }

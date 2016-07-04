@@ -10,6 +10,10 @@
                     <h4>{{ trans('general/label.subject_name') }} {{ $subject['name'] }}</h4>
                     <h4>{{ trans('general/label.subject_description') }} {{ $subject['description'] }}</h4>
                     <p class="flash alert-info"> {{ $message or '' }}</p>
+                    {!! link_to_action('Suppervisor\TaskController@create', trans('general/label.create'), [], ['class' => 'btn btn-info']) !!}
+                    <button type="button" class="btn btn-back btn-info" id="btn-back">
+                        {{ trans('general/label.back') }}
+                    </button>
                 </div>
                 <div class="page-content">
                     <table class="table table-bordered">
@@ -30,9 +34,7 @@
                                     <td>{{ $task['name'] }}</td>
                                     <td>{{ $task['description'] }}</td>
                                     <td>
-                                        <a class="btn btn-info" href="#">
-                                            <i class="fa fa-pencil"></i>{{ trans('general/label.edit') }}
-                                        </a>
+                                        {!! link_to_action('Suppervisor\TaskController@edit', trans('general/label.edit'), [$task['id']], ['class' => 'btn btn-info']) !!}
                                     </td>
                                 </tr>
                             @endforeach
