@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Events\CourseActivity;
+use App\Events\SubjectActivity;
 use App\Models\UserCourse;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Models\UserSubject;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\CourseActivity' => [
             'App\Listeners\CourseActivityListener',
+        ],
+        'App\Events\SubjectActivity' => [
+            'App\Listeners\SubjectActivityListener',
         ],
     ];
 

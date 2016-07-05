@@ -4,6 +4,8 @@ namespace App\Repositories\Course;
 
 use App\Events\CourseActivity;
 use App\Models\Activity;
+use App\Models\Subject;
+use App\Models\UserSubject;
 use App\Repositories\BaseRepository;
 use App\Models\Course;
 use Exception;
@@ -112,5 +114,20 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         }
 
         return $data;
+    }
+
+    public function userCourses($userId)
+    {
+        $limit = config('common.course.limit');
+        $courses = UserCourse::where('user_id', $userId)
+            ->join('courses', 'user_courses.course_id', '=', 'courses.id')->paginate($limit);
+        foreach ($courses as $key => $course) {
+            $courses[$key]['subjects'] = UserSubject::where('user_id', $userId)
+                ->join('subjects', 'user_subjects.subject_id', '=', 'subjects.id')
+                ->join('course_subjects', 'course_subjects.subject_id', '=', 'user_subjects.subject_id')
+                ->where('course_id', $course['id'])->get();
+        }
+
+        return $courses;
     }
 }

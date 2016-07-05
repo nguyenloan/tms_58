@@ -8,15 +8,20 @@ return [
             'password_min' => 6,
             'image_size' => 2000,
         ],
-        'avatar_path' => '/images',
+        'avatar_path' => '/upload/',
         'default_avatar' => '/images/default.png',
         'follow' => 'follow',
         'unfollow' => 'unfollow',
+        'activity_limit' => 15,
     ],
     'subject' => [
         'rule' => [
             'name_max' => 120,
         ],
+        'status' => [
+            'start' => 0,
+            'finish' => 1,
+        ]
     ],
     'task' => [
         'rule' => [
@@ -27,6 +32,7 @@ return [
         'rule' => [
             'name_max' => 200,
         ],
+        'limit' => 4,
     ],
     'layout' => [
         'general' => 'layout.layout',
