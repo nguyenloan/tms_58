@@ -15,6 +15,8 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
+    Route::get('/courses/{id}/trainees', ['as' => 'courses.trainees', 'uses' => 'Trainee\CourseController@trainees']);
+    Route::get('/courses/{id}/enroll', ['as' => 'courses.enroll', 'uses' => 'Trainee\CourseController@enroll']);
     Route::resource('courses', 'Trainee\CourseController');
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');

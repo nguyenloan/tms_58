@@ -56,6 +56,14 @@ return [
         'status' => [
             'training' => 0,
             'finish' => 1,
-        ]
-    ]
+        ],
+    ],
+    'activity' => [
+        'type' => [
+            'start_course' => 0,
+            'finish_course' => 1,
+            'start_subject' => 2,
+            'finish_subject' => 3,
+        ],
+    ],
 ];
