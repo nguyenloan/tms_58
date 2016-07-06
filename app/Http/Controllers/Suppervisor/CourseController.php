@@ -99,6 +99,7 @@ class CourseController extends Controller
     {
         try {
             $course = $this->courseRepository->find($id);
+            session()->flash('courseId', $id);
 
             return view('suppervisor.course.edit', [
                 'course' => $course

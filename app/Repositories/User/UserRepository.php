@@ -10,6 +10,7 @@ namespace App\Repositories\User;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
+use App\Models\Course;
 use Exception;
 use Auth;
 
@@ -67,6 +68,21 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $data = $this->model->where('role', User::ROLE_SUPERVISOR)
             ->lists('name', 'id');
+
+        return $data;
+    }
+
+    public function listTrainee($courseId)
+    {
+        $course = Course::findOrFail($courseId);
+        $userCourse = $course->users->lists('id');
+
+        $limit = isset($options['limit']) ? $options['limit'] : config('common.base_repository.limit');
+        $order = isset($options['order']) ? $options['order'] : config('common.base_repository.order_by');
+        $data = $this->model->where('role', User::ROLE_TRAINEE)
+            ->whereNotIn('id', $userCourse)
+            ->orderBy($order['key'], $order['aspect'])
+            ->paginate($limit);
 
         return $data;
     }
