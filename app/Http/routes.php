@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('courses', 'Suppervisor\CourseController');
         Route::resource('tasks', 'Suppervisor\TaskController');
         Route::resource('userCourses', 'Suppervisor\UserCourseController');
+        Route::resource('trainees', 'Suppervisor\TraineeController');
     });
 });
 Route::auth();

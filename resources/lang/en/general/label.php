@@ -46,4 +46,11 @@ return [
     'activities' => 'Activities',
     'image' => 'Image',
     'add_trainee' => 'Add Trainee',
+    'trainee' => 'Trainee',
+    'supervisor' => 'Supervisor',
+    'role' => 'Role',
+    'password' => 'Password',
+    'create_object' => 'Create :object',
+    'edit_object' => 'Edit :object',
+    'delete' => 'Delete',
 ];

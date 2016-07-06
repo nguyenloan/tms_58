@@ -13,6 +13,10 @@ return [
         'follow' => 'follow',
         'unfollow' => 'unfollow',
         'activity_limit' => 15,
+        'role' => [
+            'trainee' => 0,
+            'supervisor' => 1,
+        ]
     ],
     'subject' => [
         'rule' => [
