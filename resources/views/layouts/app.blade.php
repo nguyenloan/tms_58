@@ -8,6 +8,7 @@
     <!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="/bower/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/bower/font-awesome/css/font-awesome.css"/>
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     <link rel="stylesheet" type="text/css" href="/bower/font-awesome/css/landing_page.css"/>
     @yield('css')
@@ -52,7 +53,15 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('settings.logout') }}</a></li>
+                                <li>
+                                    <a href="{{ route('users.show', ['id' => Auth::user()->id ]) }}">
+                                        <i class="fa fa-btn fa-user"></i>{{ trans('settings.profile') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('settings.logout') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     @endif

@@ -64,10 +64,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $input;
     }
 
-    public function listSupervisor()
+    public function listSupervisor($courseId)
     {
+        $course = Course::findOrFail($courseId);
+        $userCourse = $course->users->lists('id');
         $data = $this->model->where('role', User::ROLE_SUPERVISOR)
-            ->lists('name', 'id');
+            ->whereNotIn('id', $userCourse)->lists('name','id');
 
         return $data;
     }
@@ -83,6 +85,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->whereNotIn('id', $userCourse)
             ->orderBy($order['key'], $order['aspect'])
             ->paginate($limit);
+
+        return $data;
+    }
+
+    public function find($id = null)
+    {
+        $data = $this->model->find($id);
+
+        if (!$data) {
+            throw new Exception("general/message.item_not_exist");
+        }
 
         return $data;
     }

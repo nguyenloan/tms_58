@@ -87,4 +87,11 @@ class UserController extends Controller
             return redirect()->route("users.edit", ['id' => $id])->withError($ex->getMessage());
         }
     }
+
+    public function calendarUser()
+    {
+        $calendarUser = $this->courseRepository->userCourses(Auth::user()->id);
+
+        return view('user.user_calendar', compact('calendarUser'));
+    }
 }

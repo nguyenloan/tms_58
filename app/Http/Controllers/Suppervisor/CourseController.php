@@ -134,7 +134,7 @@ class CourseController extends Controller
     }
     public function addSuppervisor($id)
     {
-        $suppervisor = $this->userRepository->listSupervisor();
+        $suppervisor = $this->userRepository->listSupervisor($id);
         $course = $this->courseRepository->find($id);
 
         return view('suppervisor.course.add_supper', compact('course', 'suppervisor'));
