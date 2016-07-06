@@ -6,14 +6,20 @@ use App\Http\Requests\UpdateUserRequest;
 use Auth;
 use App\Repositories\User\UserRepositoryInterface;
 use Exception;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Activity\ActivityRepositoryInterface;
 
 class UserController extends Controller
 {
     private $userRepository;
+    private $courseRepository;
+    private $activityRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository, CourseRepositoryInterface $courseRepository, ActivityRepositoryInterface $activityRepository)
     {
         $this->userRepository = $userRepository;
+        $this->courseRepository = $courseRepository;
+        $this->activityRepository = $activityRepository;
     }
 
     /**
@@ -26,10 +32,12 @@ class UserController extends Controller
     {
         try {
             $user = $this->userRepository->show($id);
+            $courses = $this->courseRepository->userCourses($id);
+            $activities = $this->activityRepository->userActivity();
 
-            return view('user.show', compact('user'));
+            return view('user.show', compact('user', 'courses', 'activities'));
         } catch (Exception $ex) {
-            return redirect()->route('users.show')->withError($ex->getMessage());
+            return redirect()->route('courses.index')->withError($ex->getMessage());
         }
 
     }
@@ -74,7 +82,7 @@ class UserController extends Controller
         try {
             $data = $this->userRepository->update($data, $id);
 
-            return redirect()->route("users.edit", ['id' => $id])->withSucces(trans('user/message.edit_user_successfully'));
+            return redirect()->route("users.edit", ['id' => $id])->withSuccess(trans('general/message.edit_user_successfully'));
         } catch (Exception $ex) {
             return redirect()->route("users.edit", ['id' => $id])->withError($ex->getMessage());
         }

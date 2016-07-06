@@ -17,4 +17,5 @@ return [
     'enroll_course_successfully' => 'Enroll this course successfully',
     'duplicated_event' => 'Duplicated event',
     'enrolled_this_course' => 'You have enrolled this course',
+    'edit_user_successfully' => 'Edit user successfully',
 ];

@@ -66,4 +66,13 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
             throw new Exception(trans('general/message.duplicated_event'));
         }
     }
+
+    public function userActivity()
+    {
+        $limit = config('common.user.activity_limit');
+        $order = config('common.base_repository.order_by');
+        $data = $this->model->where('user_id', Auth::user()->id)->orderBy($order['key'], $order['aspect'])->take($limit)->get();
+
+        return $data;
+    }
 }

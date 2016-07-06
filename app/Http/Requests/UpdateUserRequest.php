@@ -21,12 +21,13 @@ class UpdateUserRequest extends Request
      */
     public function rules()
     {
-        $userId = substr(UpdateUserRequest::getRequestUri(), -1);
+        $parts = explode("/", UpdateUserRequest::path());
+        $userId = end($parts);
         $rule = config('common.user.rule');
 
         return [
             'name' => "max:{$rule['name_max']}",
-            'email' => "required|email|max:{$rule['email_max']}|unique:users,email,{$userId},id,deleted_at,NULL",
+            'email' => "required|email|max:{$rule['email_max']}|unique:users,email,{$userId},id",
             'image' => "mimes:jpg,jpeg,png,gif|max:{$rule['image_size']}",
         ];
     }
