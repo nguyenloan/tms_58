@@ -60,4 +60,15 @@ class User extends Authenticatable
     {
         return $this->role == User::ROLE_SUPERVISOR;
     }
+
+    public function getRoleAttribute($value)
+    {
+        $role = trans('general/label.trainee');
+
+        if ($value) {
+            $role = trans('general/label.supervisor');
+        }
+
+        return $role;
+    }
 }
