@@ -45,4 +45,5 @@ return [
     'courses' => 'Courses',
     'activities' => 'Activities',
     'image' => 'Image',
+    'add_trainee' => 'Add Trainee',
 ];

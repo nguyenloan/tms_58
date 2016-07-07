@@ -35,10 +35,14 @@
                                 'class' => 'btn btn-info'
                             ]) !!}
                             {!! link_to_action('Suppervisor\CourseController@addSuppervisor',
-                                trans('settings.add_suppervisor'),
-                                [$course->id], [
-                                    'class' => 'btn btn-info'
-                            ]) !!}
+                                    trans('settings.add_suppervisor'),
+                                    [$course->id],
+                                    ['class' => 'btn btn-info']
+                            ) !!}
+                            {!! link_to_action('Suppervisor\UserCourseController@create',
+                                    trans('general/label.add_trainee'),[],
+                                    ['class' => 'btn btn-info']
+                            ) !!}
                         </div>
                     {!! Form::close() !!}
                 </div>

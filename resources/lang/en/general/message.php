@@ -18,4 +18,5 @@ return [
     'duplicated_event' => 'Duplicated event',
     'enrolled_this_course' => 'You have enrolled this course',
     'edit_user_successfully' => 'Edit user successfully',
+    'alert_add_trainee' => 'You do not choose trainee.'
 ];

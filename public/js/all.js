@@ -97,4 +97,24 @@ $(document).ready(function () {
         no = subparent.find('.task-name').last().attr('id').split('-')[1];
         $("#option-count").val(parseInt(no));
     });
+    $('section').on('click', '#btn-addTrainee', function (event) {
+        var arr = [];
+        $("input[type='checkbox']:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr.length == 0) {
+            alert($(this).data('check'));
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: $('#btn-addTrainee').data('url'),
+            data: {
+                ids: arr
+            },
+            success: function (data, status) {
+                window.location.replace($('#btn-addTrainee').data('redirect'));
+            }
+        });
+    });
 });

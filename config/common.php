@@ -34,6 +34,12 @@ return [
         ],
         'limit' => 4,
     ],
+    'user_course' => [
+        'status' => [
+            'start' => 0,
+            'finish' => 1,
+        ],
+    ],
     'layout' => [
         'general' => 'layout.layout',
     ],
