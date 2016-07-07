@@ -27,6 +27,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->share('layout', config('common.layout.general'));
+        view()->share('managements', config('common.layout.managements'));
     }
 
     /**

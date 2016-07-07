@@ -46,6 +46,20 @@ return [
     ],
     'layout' => [
         'general' => 'layout.layout',
+        'managements' => [
+            [
+                'name' => 'Course',
+                'url' => 'admin.courses.index',
+            ],
+            [
+                'name' => 'Subject',
+                'url' => 'admin.subjects.index',
+            ],
+            [
+                'name' => 'Trainee',
+                'url' => 'admin.trainees.index',
+            ],
+        ]
     ],
     'base_repository' => [
         'filter' => [],

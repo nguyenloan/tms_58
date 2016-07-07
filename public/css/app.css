@@ -27,3 +27,32 @@
 .user-information {
     margin-bottom: 20px;
 }
+
+.trainee-information {
+    margin-bottom: 20px;
+}
+
+.statistic {
+    color: #f59e3c
+}
+
+#header {
+    height: 100px;
+    border-bottom: solid 1px #ebe4dd;
+}
+
+.menu ul li {
+    border-left: solid 1px #ebe4dd;
+}
+.menu ul li:last-child {
+    border-right: solid 1px #ebe4dd;
+}
+
+.logo a img {
+    height: 95px;
+    width: 200px;
+}
+
+#left-sidebar{
+    margin-top: 50px;
+}

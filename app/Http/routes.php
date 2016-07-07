@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'addSuppervisor',
             'uses' => 'Suppervisor\CourseController@createSupper'
         ]);
+        Route::get('/courses/{id}/trainee-progress', ['as' => 'admin.courses.trainee-progress', 'uses' => 'Suppervisor\CourseController@traineeProgress']);
         Route::resource('courses', 'Suppervisor\CourseController');
         Route::resource('tasks', 'Suppervisor\TaskController');
         Route::resource('userCourses', 'Suppervisor\UserCourseController');

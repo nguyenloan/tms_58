@@ -10,10 +10,7 @@ use App\Http\Requests\UpdateCourseRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Http\Requests\AddSuppervisorRequest;
-use App\Models\Course;
-use App\Models\Subject;
-use App\Models\User;
-use App\Models\CourseSubject;
+use Exception;
 
 class CourseController extends Controller
 {
@@ -106,7 +103,7 @@ class CourseController extends Controller
             ]);
         } catch (Exception $e) {
 
-            return redirect()->route('admin.course.index')->withError($e->getMessage());
+            return redirect()->route('admin.courses.index')->withError($e->getMessage());
         }
     }
 
@@ -157,7 +154,19 @@ class CourseController extends Controller
                 'message' => trans('settings.create_success')
             ]);
         } catch (Exception $e) {
-            return redirect()->route('admin.course.index')->withError($e->getMessage());
+            return redirect()->route('admin.courses.index')->withError($e->getMessage());
         }
+    }
+
+    public function traineeProgress($id)
+    {
+        try {
+            $data = $this->courseRepository->traineeProgress($id);
+
+            return view('suppervisor.course.trainee_progress', $data);
+        } catch (Exception $e) {
+            return redirect()->route('admin.courses.index')->withError($e->getMessage());
+        }
+
     }
 }

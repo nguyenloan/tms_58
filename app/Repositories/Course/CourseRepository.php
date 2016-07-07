@@ -5,7 +5,9 @@ namespace App\Repositories\Course;
 use App\Events\CourseActivity;
 use App\Models\Activity;
 use App\Models\Subject;
+use App\Models\Task;
 use App\Models\UserSubject;
+use App\Models\UserTask;
 use App\Repositories\BaseRepository;
 use App\Models\Course;
 use Exception;
@@ -129,5 +131,47 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         }
 
         return $courses;
+    }
+
+    public function traineeProgress($id)
+    {
+        $course = $this->model->find($id);
+        $subjectIds = $course->subjects->lists('id');
+        $tasks = Task::whereIn('subject_id', $subjectIds)->get();
+        $taskCount = $tasks->count();
+        $limit = config('common.base_repository.limit');
+        $users = $course->users()->with('tasks')->paginate($limit);
+
+        if (!count($users)) {
+            throw new Exception(trans('general/message.trainee_is_empty'));
+        }
+
+        $completedTrainees = 0;
+        foreach ($users as $key => $user) {
+            $userTaskCount = 0;
+            $users[$key]['completed'] = 0;
+
+            if (count($user->tasks)) {
+                foreach ($user->tasks as $task) {
+                    $userTaskCount += $task->pivot->status;
+                }
+                $users[$key]['completed'] = ($userTaskCount / $taskCount) * 100;
+            }
+
+            if ($userTaskCount == $taskCount) {
+                $completedTrainees++;
+            }
+
+        }
+
+        $userCount = count($users);
+        $data = [
+            'users' => $users,
+            'totalTrainee' => $userCount,
+            'completed' => $completedTrainees,
+            'training' => $userCount - $completedTrainees,
+        ];
+
+        return $data;
     }
 }
