@@ -127,4 +127,62 @@ $(document).ready(function () {
             }
         });
     });
+    $('section').on('click', '#btn-addCourse', function (event) {
+        event.preventDefault();
+        var arr = [];
+        var name = null;
+        var description = null;
+        name = $('#name').val();
+        description = $('#description').val();
+        $("input[type='checkbox']:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr.length == 0) {
+            alert($('#btn-addCourse').data('check'));
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: $('#btn-addCourse').data('url'),
+            data: {
+                ids: arr,
+                name: name,
+                description: description,
+            },
+            success: function (data, status) {
+                window.location.replace($('#btn-addCourse').data('redirect'));
+            }
+        });
+    });
+    $('section').on('click', '#btn-editCourse', function (event) {
+        event.preventDefault();
+        var arr = [];
+        var name = null;
+        var description = null;
+        var subjectIds = [];
+        name = $('#name').val();
+        description = $('#description').val();
+        subjectIds.push($('#subjectIds').val());
+        $("input[type='checkbox']:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr.length == 0) {
+            alert($('#btn-editCourse').data('check'));
+            return false;
+        }
+        $.ajax({
+            type: 'PUT',
+            url: $('#btn-editCourse').data('url'),
+            data: {
+                ids: arr,
+                name: name,
+                description: description,
+                subjectIds: subjectIds,
+            },
+            success: function (data, status) {
+                window.location.replace($('#btn-editCourse').data('redirect'));
+
+            }
+        });
+    });
 });

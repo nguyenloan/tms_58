@@ -4,22 +4,21 @@
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-11">
-                <div class="page-header">
-                    <h2>{{ trans('settings.create_course') }}</h2><br/>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ trans('settings.create_course') }}</h3>
                 </div>
-                <div class="page-content">
-                    @include('common.error')
-                    {!! Form::open([
-                        'method' => 'POST',
-                        'url' => 'admin/courses/'
-                    ]) !!}
+                <div class="panel-body">
+                    <div class="page-header">
+                        @include('common.error')
+                        <p class="flash alert-info"> {{ $message }}</p>
                         <div class="form-group">
                             {!! Form::label('name', trans('settings.name_course'), [
                                 'class' => 'col-md-4 control-label'
                             ]) !!}
                             {!! Form::text('name', null, [
-                                'class' => 'form-control'
+                                'class' => 'form-control',
+                                'id' => 'name'
                             ]) !!}
                         </div>
                         <div class="form-group">
@@ -27,15 +26,52 @@
                                 'class' => 'col-md-4 control-label'
                             ]) !!}
                             {!! Form::text('description', null, [
-                                'class' => 'form-control'
+                                'class' => 'form-control',
+                                'id'  => 'description'
                             ]) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::submit(trans('settings.save'), [
-                                'class' => 'btn btn-success'
-                            ]) !!}
+                            <h4>{{ trans('general/message.choose_subject') }}</h4>
                         </div>
-                    {!! Form::close() !!}
+                    </div>
+                    <div class="page-content">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th><span class="select-all">{{ trans('general/label.all') }}</span></th>
+                                    <th>{{ trans('general/label.id') }}</th>
+                                    <th>{{ trans('general/label.name') }}</th>
+                                    <th>{{ trans('general/label.description') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($subjects as $subject)
+                                    <tr>
+                                        <td>
+                                            {!! Form::checkbox('selectSubject', $subject->id, null, ['class' => 'select']) !!}
+                                        </td>
+                                        <td>{{ $subject->id }}</td>
+                                        <td>{{ $subject->name }}</td>
+                                        <td>{{ $subject->description }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {!! $subjects->render() !!}
+                    </div>
+                    <div class="row">
+                        <button
+                            class="btn btn-info"
+                            data-check="{{ trans('general/message.alert_add_subject') }}"
+                            data-url="{{ route('admin.courses.store') }}"
+                            data-redirect="{{ route('admin.courses.index') }}"
+                            id="btn-addCourse">
+                                {{ trans('general/label.save') }}
+                        </button>
+                        <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
+                            {{ trans('general/label.back') }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

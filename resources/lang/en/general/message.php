@@ -5,7 +5,7 @@ return [
     'create_subject_success' => 'Create new subject success',
     'create_subject_fail' => 'Create new subject fail',
     'update_subject' => 'Update subject success',
-    'delete_successfully' => 'Delete subject successfully',
+    'delete_successfully' => 'Delete option successfully',
     'delete_error' => 'Delete subject fail',
     'create_task_success' => 'Create new task successfully',
     'update_task_successfully' => 'Update task successfully',
@@ -21,4 +21,9 @@ return [
     'alert_add_trainee' => 'You do not choose trainee.',
     'trainee_is_empty' => 'Do not have any trainee in this course',
     'process_bar_percentage' => 'Completed :percent%',
+    'choose_subject' => 'Choose subject of course',
+    'alert_add_subject' => 'You do not choose subejct',
+    'edit_subject' => 'Edit subject of course',
+    'update_successfully' => 'Update course successfully',
+    'create_successfully' => 'Create option successfully',
 ];
