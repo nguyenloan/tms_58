@@ -20,6 +20,10 @@
                 <span class="information-label"><strong>{{ trans('general/label.email') }}</strong></span>
                 <span>{{ $user['email'] }}</span>
             </div>
+            <div>
+                <span class="information-label"><strong>{{ trans('settings.current_user') }}</strong></span>
+                <a href="{{ route('calendar') }}">{{ trans('settings.link') }}</a>
+            </div>
         </div>
         <div class="user-course">
             <div class="panel panel-default">

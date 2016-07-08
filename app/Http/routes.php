@@ -17,6 +17,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
     Route::get('/courses/{id}/trainees', ['as' => 'courses.trainees', 'uses' => 'Trainee\CourseController@trainees']);
     Route::get('/courses/{id}/enroll', ['as' => 'courses.enroll', 'uses' => 'Trainee\CourseController@enroll']);
+    Route::get('calendar', ['as' => 'calendar', 'uses' => 'UserController@calendarUser']);
+    Route::get('task/{id}', ['as' => 'task', 'uses' => 'Trainee\SubjectController@subjectTask']);
     Route::resource('courses', 'Trainee\CourseController');
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');

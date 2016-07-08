@@ -31,6 +31,10 @@ return [
         'rule' => [
             'name_max' => 120,
         ],
+        'status' => [
+            'start' => 'Training',
+            'finish' => 'Completed',
+        ]
     ],
     'course' => [
         'rule' => [

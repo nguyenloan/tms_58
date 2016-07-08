@@ -15,10 +15,26 @@
                         'url' => 'admin/courses/addSuppervisor'
                     ]) !!}
                         <div class="form-group">
-                            {!! Form::label('user_id', trans('settings.name'), [
-                                'class' => 'col-md-4 control-label'
-                            ]) !!}
-                            {!! Form::select('user_id', $suppervisor, null, ['class' => 'form-control']) !!}
+                            <table class="table table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th><span class="select-all">{{ trans('general/label.all') }}</span></th>
+                                        <th>{{ trans('settings.id') }}</th>
+                                        <th>{{ trans('settings.name') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($suppervisor as $key => $super)
+                                        <tr>
+                                            <td>
+                                                {!! Form::checkbox('user_id', $key, null, ['class' => 'select']) !!}
+                                            </td>
+                                            <td>{{ $key }}</td>
+                                            <td>{{ $super }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                         <div class="form-group">
                             {!! Form::hidden('course_id', $course->id) !!}

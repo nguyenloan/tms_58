@@ -56,3 +56,10 @@
 #left-sidebar{
     margin-top: 50px;
 }
+
+.title {
+    font-style: italic;
+    font-weight: bold;
+    color: rgb(0,0,0);
+}
+

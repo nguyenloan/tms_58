@@ -47,4 +47,10 @@ return [
     'description_subject' => 'Description Subject',
     'supervisor' => 'Supervisor',
     'add_suppervisor' => 'Add Suppervisor',
+    'current_user' => 'Current Process Of Trainee',
+    'link' => 'Link',
+    'start' => 'Start',
+    'end' => 'End',
+    'finish' => 'Finish',
+    'training' => 'Training',
 ];
