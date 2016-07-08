@@ -7,6 +7,15 @@
             <div class="col-lg-11">
                 <div class="page-header">
                     <h2>{{ trans('settings.edit_course') }}</h2><br/>
+                    <a href="{{ route('admin.courses.trainee-progress', ['id' => $course->id]) }}" class="btn btn-default btn-lg btn-header" id="trainee-progress">
+                        {{ trans('general/label.trainee_progress') }}
+                    </a>
+                    <button type="submit" class="btn btn-default btn-lg btn-header">
+                        {{ trans('general/label.save') }}
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
+                        {{ trans('general/label.back') }}
+                    </button>
                 </div>
                 <div class="page-content">
                     @include('common.error')

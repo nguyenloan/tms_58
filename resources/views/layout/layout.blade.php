@@ -10,11 +10,15 @@
     @include('layout.styles')
 </head>
 <body>
-    <div class="col-sm-offset-2 col-sm-8">
-        <section>
-            @include('layout.result')
-            @yield('content')
-        </section>
+    @include('layout.header')
+    <div>
+        @include('layout.left-sidebar')
+        <div class="col-sm-8">
+            <section>
+                @include('layout.result')
+                @yield('content')
+            </section>
+        </div>
     </div>
     @include('layout.scripts')
     @yield('script')
