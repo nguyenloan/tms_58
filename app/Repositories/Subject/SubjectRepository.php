@@ -112,5 +112,15 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
             throw $e;
         }
     }
+
+    public function listSubject()
+    {
+        $limit = isset($options['limit']) ? $options['limit'] : config('common.base_repository.limit');
+        $order = isset($options['order']) ? $options['order'] : config('common.base_repository.order_by');
+        $filter = isset($options['filter']) ? $options['filter'] : config('common.base_repository.filter');
+        $data = $this->model->where($filter)->orderBy($order['key'], $order['aspect'])->paginate($limit);
+
+        return $data;
+    }
 }
 

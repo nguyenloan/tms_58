@@ -9,21 +9,34 @@ use App\Http\Requests\CreateCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Subject\SubjectRepositoryInterface;
+use App\Repositories\CourseSubject\CourseSubjectRepositoryInterface;
 use App\Http\Requests\AddSuppervisorRequest;
 use Exception;
+use App\Models\Course;
+use App\Models\Subject;
+use App\Models\User;
+use App\Models\CourseSubject;
+use Collection;
 
 class CourseController extends Controller
 {
     private $courseRepository;
     private $userRepository;
+    private $subjectRepository;
+    private $courseSubjectRepository;
 
     public function __construct(
         CourseRepositoryInterface $courseRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        SubjectRepositoryInterface $subjectRepository,
+        CourseSubjectRepositoryInterface $courseSubjectRepository
     )
     {
         $this->courseRepository = $courseRepository;
         $this->userRepository = $userRepository;
+        $this->subjectRepository = $subjectRepository;
+        $this->courseSubjectRepository = $courseSubjectRepository;
     }
 
     /**
@@ -45,7 +58,12 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('suppervisor.course.create');
+        $subjects = $this->subjectRepository->listSubject();
+
+        return view('suppervisor.course.create', [
+            'subjects' => $subjects,
+            'message' => (!count($subjects)) ? trans('general/message.items_not_exist') : ''
+        ]);
     }
 
     /**
@@ -57,19 +75,25 @@ class CourseController extends Controller
 
     public function store(CreateCourseRequest $request)
     {
-        $course = [
-            'name' => $request->name,
-            'description' => $request->description
-        ];
-
         try {
-            $data = $this->courseRepository->store($course);
+            $course = [];
 
-            return redirect()->route('admin.courses.index')->with([
-                'message' => trans('settings.create_success')
-            ]);
+            if (request()->has('ids', 'name', 'description')) {
+                $subjectIds = request()->get('ids');
+                $course = [
+                    'name' => request()->get('name'),
+                    'description' => request()->get('description')
+                ];
+            }
+
+            $data = $this->courseRepository->store($course);
+            $courseId = $data->id;
+            $courseSubject = $this->courseSubjectRepository->create($subjectIds, $courseId);
+            session()->flash('message', trans('general/message.create_successfully'));
+
+            return response()->json(['success' => true]);
         } catch (Exception $e) {
-            return redirect()->route('admin.courses.index')->withError($e->getMessage());
+            return response()->json(['success' => $e->getMessage()]);
         }
     }
 
@@ -97,9 +121,14 @@ class CourseController extends Controller
         try {
             $course = $this->courseRepository->find($id);
             session()->flash('courseId', $id);
+            $subjectIds =  $this->courseRepository->subjectIds($id);
+
+            $subjects = $this->subjectRepository->listSubject();
 
             return view('suppervisor.course.edit', [
-                'course' => $course
+                'course' => $course,
+                'subjectIds' => $subjectIds,
+                'subjects' => $subjects
             ]);
         } catch (Exception $e) {
 
@@ -116,22 +145,26 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, $id)
     {
-        $courseInput = [
-            'name' => $request->name,
-            'description' => $request->description
-        ];
-
         try {
-            $course = $this->courseRepository->update($courseInput, $id);
+            $course = [];
+            if (request()->has('ids', 'name', 'description', 'subjectIds')) {
+                $course = [
+                    'name' => request()->get('name'),
+                    'description' => request()->get('description')
+                ];
+                $newSubjectIds = request()->get('ids');
+                $oldSubejctIds = request()->get('subjectIds');
+            }
 
-            return redirect()->route('admin.courses.index')->with([
-                'message' => trans('settings.edit_success')
-            ]);
+            $course = $this->courseRepository->updateCourse($id, $newSubjectIds, $course);
+            session()->flash('message', trans('general/message.update_successfully'));
+
+            return response()->json(['success' => true]);
         } catch (Exception $e) {
-
-            return redirect()->route('admin.courses.index')->withError($e->getMessage());
+            return response()->json(['success' => false]);
         }
     }
+
     public function addSuppervisor($id)
     {
         $suppervisor = $this->userRepository->listSupervisor($id);
@@ -167,6 +200,24 @@ class CourseController extends Controller
         } catch (Exception $e) {
             return redirect()->route('admin.courses.index')->withError($e->getMessage());
         }
+    }
 
+    public function destroy($id)
+    {
+        if (request()->has('ids')) {
+            $ids = request()->get('ids');
+        }
+
+        try {
+            $data = $this->courseRepository->delete($ids);
+        } catch (Exception $e) {
+            session()->flash('error', $e->getMessage());
+
+            return response()->json(['success' => false]);
+        }
+
+        session()->flash('message', trans('general/message.delete_successfully'));
+
+        return response()->json(['success' => true]);
     }
 }

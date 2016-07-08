@@ -10,10 +10,13 @@ use App\Models\UserSubject;
 use App\Models\UserTask;
 use App\Repositories\BaseRepository;
 use App\Models\Course;
+use App\Models\CourseSubject;
 use Exception;
 use Auth;
 use App\Models\User;
 use App\Models\UserCourse;
+use Collection;
+use DB;
 
 class CourseRepository extends BaseRepository implements CourseRepositoryInterface
 {
@@ -173,5 +176,61 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         ];
 
         return $data;
+    }
+
+    public function subjectIds($courseId)
+    {
+        $subjectIds = $this->model->findOrFail($courseId)->subjects->pluck('id')->all();
+
+        return collect($subjectIds);
+    }
+
+    public function delete($ids)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->model->destroy($ids);
+
+            if (!$data) {
+                throw new Exception(trans('general/message.delete_error'));
+            }
+
+            if (is_array($ids)) {
+                $courseSubject = CourseSubject::whereIn('course_id', $ids)->delete();
+            } else {
+                $courseSubject = CourseSubject::where('course_id', $ids)->delete();
+            }
+
+            DB::commit();
+
+            return $data;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+    public function updateCourse($courseId, $newSubjectIds, $courseInput)
+    {
+         try {
+            $courseSubjects = [];
+
+            foreach ($subjectIds as $subjectId) {
+                $courseSubjects[] = [
+                    'course_id' => $courseId,
+                    'subject_id' => $subjectId,
+                ];
+            }
+
+            DB::beginTransaction();
+            $delete= CourseSubject::where('course_id', $courseId)->delete();
+            $create = CourseSubject::insert($courseSubjects);
+            $course = $this->model->find($courseId)->update($courseInput);
+            DB::commit();
+
+            return $course;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }
