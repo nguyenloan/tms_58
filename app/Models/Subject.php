@@ -29,15 +29,4 @@ class Subject extends Model
     {
         return $this->hasMany(Task::class);
     }
-
-    public function getStatusAttribute($value)
-    {
-        $status = trans('general/label.training');
-
-        if ($value) {
-            $status = trans('general/label.completed');
-        }
-
-        return $status;
-    }
 }

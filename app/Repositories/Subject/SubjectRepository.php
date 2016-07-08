@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Subject;
 
+use App\Models\CourseSubject;
 use App\Models\Subject;
+use App\Models\User;
 use App\Models\UserTask;
 use App\Repositories\BaseRepository;
 use Exception;
@@ -53,37 +55,23 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
         $userSubject = UserSubject::where(['user_id' => Auth::user()->id, 'subject_id' => $id])->first();
 
         if (!count($userSubject)) {
-            $userSubject = [
-                'user_id' => Auth::user()->id,
-                'subject_id' => $id,
-                'status' => 0,
-                'start_date' => date("Y-m-d H:i:s")
-            ];
-            UserSubject::create($userSubject);
-            $userSubject['status'] = trans('general/label.training');
+            throw new Exception("general/message.access_error");
         }
-        $tasks = Task::where('subject_id', $id)->get();
 
-        if (!count($tasks)) {
+        $userTasks = Auth::user()->load(['tasks' => function ($query) use ($id) {
+            $query->where('tasks.subject_id', $id);
+        }]);
+
+        if(empty($userTasks->tasks)){
             throw new Exception("general/message.task_empty");
         }
 
-        foreach ($tasks as $key => $task) {
-            $userTask = UserTask::where(['user_id' => Auth::user()->id, 'task_id' => $task['id']])->first();
+        $subject['pivot'] = $userSubject;
+        $subject['tasks'] = $userTasks->tasks;
 
-            if (!count($userTask)) {
-                $userTask = [
-                    'user_id' => Auth::user()->id,
-                    'task_id' => $task['id'],
-                    'status' => 0
-                ];
-                UserTask::create($userTask);
-                $userTask['status'] = trans('general/label.training');
-            }
-
-            $tasks[$key]['status'] = $userTask['status'];
+        foreach ($subject['tasks'] as $key => $task) {
+            $subject['tasks'][$key]['status'] = $this->convertStatus($task->pivot->status);
         }
-        $subject['tasks'] = $tasks;
 
         return $subject;
     }

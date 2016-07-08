@@ -33,7 +33,7 @@ class UserController extends Controller
         try {
             $user = $this->userRepository->show($id);
             $courses = $this->courseRepository->userCourses($id);
-            $activities = $this->activityRepository->userActivity();
+            $activities = $this->activityRepository->userActivity($id);
 
             return view('user.show', compact('user', 'courses', 'activities'));
         } catch (Exception $ex) {

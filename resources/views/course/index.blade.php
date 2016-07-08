@@ -1,7 +1,7 @@
 @extends($layout)
 @section("content")
     <div class="page-header">
-        <h2>{{ trans('label.courses') }}</h2>
+        <h2>{{ trans('general/label.courses') }}</h2>
     </div>
     <div class="page-content">
         @foreach ($rows as $key => $row)

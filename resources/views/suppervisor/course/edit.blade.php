@@ -6,11 +6,23 @@
         <div class="row">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">{{ trans('settings.edit_course') }}</h3>
+                    <h2>{{ trans('settings.edit_course') }}</h2>
+                    <a href="{{ route('admin.courses.trainee-progress', ['id' => $course->id]) }}" class="btn btn-default btn-lg btn-header" id="trainee-progress">
+                        {{ trans('general/label.trainee_progress') }}
+                    </a>
+                    <button type="submit" class="btn btn-default btn-lg btn-header">
+                        {{ trans('general/label.save') }}
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
+                        {{ trans('general/label.back') }}
+                    </button>
                 </div>
-                <div class="panel-body">
-                    <div class="page-header">
-                        @include('common.error')
+                <div class="page-content">
+                    @include('common.error')
+                    {!! Form::open([
+                        'method' => 'PUT',
+                        'route' => ['admin.courses.update', $course->id]
+                    ]) !!}
                         <div class="form-group">
                             {!! Form::label('name', trans('settings.name_course'), [
                                 'class' => 'col-md-4 control-label'

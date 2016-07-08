@@ -16,9 +16,9 @@
             <div class='panel-body'>
                 <div class="subject-description">{{ $subject['description'] }}</div>
                 <div class="subject-information">
-                    <div class="start_date">{{ trans('general/label.start_date', ['date' => $subject['start_date']]) }}</div>
-                    <div class="end_date">{{ trans('general/label.end_date', ['date' => $subject['start_date']]) }}</div>
-                    <div class="status">{{ trans('general/label.subject_status', ['status' => $subject['status']]) }}</div>
+                    <div class="start_date">{{ trans('general/label.start_date', ['date' => $subject['pivot']['start_date']]) }}</div>
+                    <div class="end_date">{{ trans('general/label.end_date', ['date' => $subject['pivot']['end_date']]) }}</div>
+                    <div class="status">{{ trans('general/label.subject_status', ['status' => $subject['pivot']['status']]) }}</div>
                 </div>
                 <div class="subject-task">
                     @foreach ($subject['tasks'] as $key => $task)
