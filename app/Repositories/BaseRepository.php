@@ -104,4 +104,15 @@ abstract class BaseRepository
             throw $e;
         }
     }
+
+    public function convertStatus($value)
+    {
+        $status = trans('general/label.training');
+
+        if ($value) {
+            $status = trans('general/label.completed');
+        }
+
+        return $status;
+    }
 }

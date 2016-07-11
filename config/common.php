@@ -16,7 +16,7 @@ return [
         'role' => [
             'trainee' => 0,
             'supervisor' => 1,
-        ]
+        ],
     ],
     'subject' => [
         'rule' => [

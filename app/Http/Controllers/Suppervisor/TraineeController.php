@@ -88,7 +88,7 @@ class TraineeController extends Controller
             $courses = $this->courseRepository->userCourses($id);
             $activities = $this->activityRepository->userActivity();
 
-            return view('trainee.show', compact('user', 'courses', 'activities'));
+            return view('suppervisor.trainee.show', compact('user', 'courses', 'activities'));
         } catch (Exception $ex) {
             return redirect()->route('courses.index')->withError($ex->getMessage());
         }

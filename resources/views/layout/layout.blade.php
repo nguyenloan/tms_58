@@ -12,7 +12,9 @@
 <body>
     @include('layout.header')
     <div>
-        @include('layout.left-sidebar')
+        @if (Auth::user()->role == config('common.user.role.supervisor'))
+            @include('layout.left-sidebar')
+        @endif
         <div class="col-sm-8">
             <section>
                 @include('layout.result')

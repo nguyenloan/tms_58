@@ -67,11 +67,11 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
         }
     }
 
-    public function userActivity()
+    public function userActivity($id)
     {
         $limit = config('common.user.activity_limit');
         $order = config('common.base_repository.order_by');
-        $data = $this->model->where('user_id', Auth::user()->id)->orderBy($order['key'], $order['aspect'])->take($limit)->get();
+        $data = $this->model->where('user_id', $id)->orderBy($order['key'], $order['aspect'])->take($limit)->get();
 
         return $data;
     }
