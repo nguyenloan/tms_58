@@ -8,6 +8,12 @@ use App\Repositories\User\UserRepositoryInterface;
 use Exception;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\Activity\ActivityRepositoryInterface;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Request;
+use App\Http\Requests\RegisterRequest;
+use Response;
+use Requests;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -93,5 +99,43 @@ class UserController extends Controller
         $calendarUser = $this->courseRepository->userCourses(Auth::user()->id);
 
         return view('user.user_calendar', compact('calendarUser'));
+    }
+
+    public function login(LoginRequest $request)
+    {
+        if ($request->ajax()) {
+            $auth = [
+                'email' => $request->email,
+                'password' => $request->password,
+            ];
+
+            if (Auth::attempt($auth)) {
+                return Response::json(['success' => true, 'url' => route('home')]);
+            }
+
+            return Response::json(['success' => false, 'messages' => trans('settings.fails_account')]);
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('home');
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        if ($request->ajax()) {
+            $userRegister = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+            ];
+
+            $authUser = User::create($userRegister);
+            Auth::login($authUser);
+
+            return Response::json(['success' => true, 'url' => route('home')]);
+        }
     }
 }

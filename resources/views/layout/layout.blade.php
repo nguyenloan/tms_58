@@ -12,7 +12,7 @@
 <body>
     @include('layout.header')
     <div>
-        @if (Auth::user()->role == config('common.user.role.supervisor'))
+        @if (isset(Auth::user()->role) && Auth::user()->role == config('common.user.role.supervisor'))
             @include('layout.left-sidebar')
         @else
             <div class="col-sm-2"></div>

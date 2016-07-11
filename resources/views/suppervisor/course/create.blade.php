@@ -6,7 +6,10 @@
         <div class="row">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">{{ trans('settings.create_course') }}</h3>
+                    <h3 class="panel-title">
+                        {{ trans('settings.create_course') }}
+                    </h3>
+                </button>
                 </div>
                 <div class="panel-body">
                     <div class="page-header">
@@ -18,7 +21,8 @@
                             ]) !!}
                             {!! Form::text('name', null, [
                                 'class' => 'form-control',
-                                'id' => 'name'
+                                'id' => 'name',
+                                'placeholder' => trans('settings.name_of_course')
                             ]) !!}
                         </div>
                         <div class="form-group">
@@ -27,7 +31,8 @@
                             ]) !!}
                             {!! Form::text('description', null, [
                                 'class' => 'form-control',
-                                'id'  => 'description'
+                                'id'  => 'description',
+                                'placeholder' => trans('settings.description_of_course')
                             ]) !!}
                         </div>
                         <div class="form-group">
@@ -68,7 +73,7 @@
                             id="btn-addCourse">
                                 {{ trans('general/label.save') }}
                         </button>
-                        <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
+                        <button class="btn btn-default" id="btn-back">
                             {{ trans('general/label.back') }}
                         </button>
                     </div>

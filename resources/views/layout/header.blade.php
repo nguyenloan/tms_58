@@ -6,13 +6,13 @@
             </div>
             <div class="col-sm-10 menu">
                 <ul class="nav navbar-nav">
+                    @if (Auth::check())
                     <li>
                         <a href="{{ route('courses.index') }}">
                             <i class="glyphicon glyphicon-education"></i>
                             {{ trans('general/label.courses') }}
                         </a>
                     </li>
-                    @if (Auth::check())
                         <li>
                             <a href="{{ route('users.show', ['id' => Auth::user()->id]) }}">
                                 <span class="hello_user">{{ Auth::user()->email }}</span>
@@ -26,22 +26,18 @@
                             </li>
                         @endif
                         <li>
-                            <a href="#">
-                                <i class="fa fa-unlock"></i>
-                                {{ trans('general/label.logout') }}
+                            <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('settings.logout') }}
                             </a>
                         </li>
                     @else
                         <li>
-                            <a href="#">
-                                <i class="fa fa-lock"></i>
-                                {{ trans('general/label.login') }}
+                            <a href="#" id="login" data-toggle="modal">
+                                {{ trans('settings.login') }}
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fa fa-user"></i>
-                                {{ trans('general/label.register') }}
+                            <a href="#" id="register" data-toggle="modal">
+                                {{ trans('settings.register') }}
                             </a>
                         </li>
                     @endif

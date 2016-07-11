@@ -53,4 +53,7 @@ return [
     'end' => 'End',
     'finish' => 'Finish',
     'training' => 'Training',
+    'description_of_course' => 'Description details of Course',
+    'name_of_course' => 'Name Of Course',
+    'fails_account' => 'Name or Email have error , Please again !',
 ];

@@ -10,9 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
     Route::get('/courses/{id}/trainees', ['as' => 'courses.trainees', 'uses' => 'Trainee\CourseController@trainees']);
@@ -41,14 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('trainees', 'Suppervisor\TraineeController');
     });
 });
-Route::auth();
-Route::get('home', ['middleware' => 'auth', 'as' => 'home', 'uses' => 'HomeController@index']);
-Route::get('authen/getLogin', [
-    'as' => 'getLogin',
-    'uses' => 'Auth\AuthController@getLogin'
-]);
-Route::post('authen/login', [
-    'as' => 'postLogin',
-    'uses' => 'Auth\AuthController@postLogin'
-]);
 
+
+Route::group(['middleware' => 'web'], function() {
+    Route::post('login', ['as' => 'login', 'uses' => 'UserController@login']);
+    Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
+    Route::post('register', ['as' => 'register', 'uses' => 'UserController@register']);
+});

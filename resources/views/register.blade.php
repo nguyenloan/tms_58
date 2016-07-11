@@ -7,8 +7,9 @@
                 <h4 class="modal-title">{{ trans('settings.register') }}</h4>
             </div>
             <div class="modal-body">
-                {!! Form::open(['url' => 'register', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['route' => 'register', 'name' => 'formRegister', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
                     <div class="form-group">
+                        <div class="alert alert-warning" id="register-message" role="alert"></div>
                         {!! Form::label('name', trans('settings.name'), ['class' => 'col-md-4 control-label']) !!}
                         <div class="col-md-6">
                             {!! Form::text('name', '', ['class' => 'form-control']) !!}
@@ -51,4 +52,3 @@
         </div>
     </div>
 </div>
-
