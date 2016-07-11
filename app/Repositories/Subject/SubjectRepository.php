@@ -49,21 +49,21 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
         $subject = $this->model->find($id);
 
         if (!$subject) {
-            throw new Exception("general/message.subject_empty");
+            throw new Exception(trans("general/message.subject_empty"));
         }
 
         $userSubject = UserSubject::where(['user_id' => Auth::user()->id, 'subject_id' => $id])->first();
 
         if (!count($userSubject)) {
-            throw new Exception("general/message.access_error");
+            throw new Exception(trans("general/message.access_error"));
         }
 
         $userTasks = Auth::user()->load(['tasks' => function ($query) use ($id) {
             $query->where('tasks.subject_id', $id);
         }]);
 
-        if(empty($userTasks->tasks)){
-            throw new Exception("general/message.task_empty");
+        if (empty($userTasks->tasks)) {
+            throw new Exception(trans("general/message.task_empty"));
         }
 
         $subject['pivot'] = $userSubject;

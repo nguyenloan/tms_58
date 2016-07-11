@@ -28,5 +28,5 @@ return [
     'create_successfully' => 'Create option successfully',
     'subject_empty' => 'Subject data is empty',
     'access_error' => 'You do not have the right to access this page',
-
+    'create_user_successfully' => 'Create user successfully'
 ];

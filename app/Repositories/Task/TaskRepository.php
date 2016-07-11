@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Task;
 
+use App\Models\CourseSubject;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\UserSubject;
@@ -26,10 +27,10 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
             foreach ($ids as $key => $id) {
                 $data = UserTask::where('id', $id)->update($input[$key]);
             }
-            $userTask = UserTask::where(['id' => $ids[0], 'user_id' => Auth::user()->id])->first();
+            $userTask = UserTask::find($ids[0]);
         } else {
             $data = UserTask::where('id', $ids)->update($input);
-            $userTask = UserTask::where(['id' => $ids, 'user_id' => Auth::user()->id])->first();
+            $userTask = UserTask::find($ids);
         }
 
         if (!$data) {
@@ -42,15 +43,19 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 
         if (count($taskIds) == count($completedTasks)) {
             $updatedData = [
-                'end_date' => date("Y-m-d"),
+                'end_date' => date("Y-m-d H:i:s"),
                 'status' => config('common.subject.status.finish')
             ];
             UserSubject::where(['subject_id' => $task['subject_id'], 'user_id' => Auth::user()->id])->update($updatedData);
+
+            $courseSubject = CourseSubject::where('subject_id', $task['subject_id'])->first();
             $eventData = [
                 'type' => config('common.activity.type.finish_subject'),
                 'subject_id' => $task['subject_id'],
-                'subject' => Subject::find($task['subject_id'])->name
+                'course_id' => $courseSubject['course_id'],
+                'subject' => Subject::find($task['subject_id'])->name,
             ];
+
             event(new SubjectActivity($eventData));
         }
 

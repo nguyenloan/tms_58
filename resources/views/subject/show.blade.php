@@ -17,7 +17,9 @@
                 <div class="subject-description">{{ $subject['description'] }}</div>
                 <div class="subject-information">
                     <div class="start_date">{{ trans('general/label.start_date', ['date' => $subject['pivot']['start_date']]) }}</div>
-                    <div class="end_date">{{ trans('general/label.end_date', ['date' => $subject['pivot']['end_date']]) }}</div>
+                    @if ($subject->pivot->end_date != config('common.empty_date'))
+                        <div class="end_date">{{ trans('general/label.end_date', ['date' => $subject->pivot->end_date]) }}</div>
+                    @endif
                     <div class="status">{{ trans('general/label.subject_status', ['status' => $subject['pivot']['status']]) }}</div>
                 </div>
                 <div class="subject-task">
@@ -27,15 +29,18 @@
                             <span>{{ $task['name'] }}</span>
                             <span>{{ trans('general/label.task_status', ['status' => $task['status']]) }}</span>
                         </a>
-                        {!! Form::checkbox($subject['id'], $task['id']) !!}
+                        {!! Form::checkbox($subject['id'], $task->pivot['id']) !!}
                         <br>
                     @endforeach
-                    <button
-                        class="btn btn-default"
-                        data-check="{{ trans('general/message.alert_update') }}"
-                        data-url="{{ route('tasks.update', ['id' => 1]) }}"
-                        id="btn-update-task">{{ trans('general/label.update') }}
-                    </button>
+
+                    @if (count($subject['tasks']))
+                        <button
+                            class="btn btn-default"
+                            data-check="{{ trans('general/message.alert_update') }}"
+                            data-url="{{ route('tasks.update', ['id' => 1]) }}"
+                            id="btn-update-task">{{ trans('general/label.update') }}
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
