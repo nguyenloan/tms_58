@@ -7,7 +7,9 @@
         </button>
     </div>
     <div class="col-sm-2 user-info">
-        <img class="img img-responsive user-image" id="image_url" src="{{ $user['avatar'] }}">
+        <a href="{{ route('users.edit', ['id' => Auth::user()->id]) }}">
+            <img class="img img-responsive user-image" id="image_url" src="{{ $user['avatar'] }}">
+        </a>
         <div class="user-name">{{ $user['name'] }}</div>
     </div>
     <div class="col-sm-8">

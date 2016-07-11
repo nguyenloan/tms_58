@@ -8,6 +8,7 @@ use App\Models\UserTask;
 use App\Repositories\BaseRepository;
 use Exception;
 use App\Models\UserCourse;
+use App\Models\CourseSubject;
 use Auth;
 
 class UserCourseRepository extends BaseRepository implements UserCourseRepositoryInterface
@@ -22,14 +23,15 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
         $data = $this->model->insert($inputs);
 
         if (isset($inputs[0]['course_id'])) {
-            $subjectIds = $this->model->where('course_id', $inputs[0]['course_id'])->lists('subject_id');
+            $subjectIds = CourseSubject::where('course_id', $inputs[0]['course_id'])->lists('subject_id');
             // insert user subjects
             $subjects = [];
             foreach ($subjectIds as $subjectId) {
                 $subjects[] = [
                     'user_id' => Auth::user()->id,
                     'subject_id' => $subjectId,
-                    'status' => config('common.subject.status.start')
+                    'status' => config('common.subject.status.start'),
+                    'start_date' => date("Y-m-d H:i:s"),
                 ];
             }
             UserSubject::insert($subjects);
@@ -39,7 +41,7 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
             foreach ($taskIds as $taskId) {
                 $tasks[] = [
                     'user_id' => Auth::user()->id,
-                    'tasks_id' => $taskId,
+                    'task_id' => $taskId,
                     'status' => config('common.user_task.status.training')
                 ];
             }

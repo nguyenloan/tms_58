@@ -48,7 +48,7 @@ class SubjectController extends Controller
 
             return view('subject.show', compact('subject'));
         } catch (Exception $ex) {
-            return redirect()->route('subjects.index')->withError($ex->getMessage());
+            return redirect()->route('courses.index')->withError($ex->getMessage());
         }
     }
     public function subjectTask($id)

@@ -47,6 +47,7 @@ return [
             'start' => 0,
             'finish' => 1,
         ],
+        'activity_quality' => 20,
     ],
     'layout' => [
         'general' => 'layout.layout',
@@ -100,4 +101,5 @@ return [
             'finish_subject' => 3,
         ],
     ],
+    'empty_date' => '0000-00-00 00:00:00',
 ];

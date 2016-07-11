@@ -26,13 +26,11 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
         $data = [
             'user_id' => Auth::user()->id,
             'description' => $this->getDescription($input),
-            'type' => $input['type']
+            'type' => $input['type'],
+            'course_id' => $input['course_id'],
         ];
-
         if (isset($input['subject_id'])) {
             $data['subject_id'] = $input['subject_id'];
-        } else {
-            $data['course_id'] = $input['course_id'];
         }
 
         $data = $this->model->create($data);
@@ -44,9 +42,9 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
     {
         switch ($input['type']) {
             case config('common.activity.type.start_course'):
-                return trans('general/message.start_course_activity', ['user' => Auth::user()->name]);
+                return trans('general/message.start_course_activity', ['user' => Auth::user()->name, 'course' => $input['name']]);
             case config('common.activity.type.finish_course'):
-                return trans('general/message.finish_course_activity', ['user' => Auth::user()->name]);
+                return trans('general/message.finish_course_activity', ['user' => Auth::user()->name, 'course' => $input['name']]);
             case config('common.activity.type.start_subject'):
                 return trans('general/message.start_subject_activity', ['user' => Auth::user()->name, 'subject' => $input['subject']]);
             case config('common.activity.type.finish_subject'):
@@ -56,13 +54,13 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
 
     public function checkDuplicatedEvent($input)
     {
-        if (isset($input['course_id'])) {
-            $userActivity = $this->model->where(['user_id' => Auth::user()->id, 'course_id' => $input['course_id']])->count();
-        } else {
+        if (isset($input['subject_id'])) {
             $userActivity = $this->model->where(['user_id' => Auth::user()->id, 'subject_id' => $input['subject_id']])->count();
+        } else {
+            $userActivity = $this->model->where(['user_id' => Auth::user()->id, 'course_id' => $input['course_id']])->count();
         }
 
-        if ($userActivity > 0) {
+        if ($userActivity > config('common.user_course.activity_quality')) {
             throw new Exception(trans('general/message.duplicated_event'));
         }
     }

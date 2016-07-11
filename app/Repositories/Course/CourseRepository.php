@@ -111,8 +111,37 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             'start_date' => date("Y-m-d H:i:s")
         ];
         $data = UserCourse::create($input);
-        $data['type'] = config('common.activity.type.start_course');
-        event(new CourseActivity($data));
+        $subjectIds = CourseSubject::where('course_id', $courseId)->lists('subject_id');
+
+        if (count($subjectIds)) {
+            // insert user subjects
+            $subjects = [];
+            foreach ($subjectIds as $subjectId) {
+                $subjects[] = [
+                    'user_id' => Auth::user()->id,
+                    'subject_id' => $subjectId,
+                    'status' => config('common.subject.status.start'),
+                    'start_date' => date("Y-m-d H:i:s"),
+                ];
+            }
+            UserSubject::insert($subjects);
+            // insert user tasks
+            $tasks = [];
+            $taskIds = Task::whereIn('subject_id', $subjectIds)->lists('id');
+            foreach ($taskIds as $taskId) {
+                $tasks[] = [
+                    'user_id' => Auth::user()->id,
+                    'task_id' => $taskId,
+                    'status' => config('common.user_task.status.training'),
+                ];
+            }
+            UserTask::insert($tasks);
+        }
+
+        $input['name'] = $this->model->find($courseId)->name;
+        $input['type'] = config('common.activity.type.start_course');
+
+        event(new CourseActivity($input));
 
         if (!$data) {
             throw new Exception(trans('general/message.create_error'));
@@ -209,9 +238,10 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             throw $e;
         }
     }
+
     public function updateCourse($courseId, $newSubjectIds, $courseInput)
     {
-         try {
+        try {
             $courseSubjects = [];
 
             foreach ($subjectIds as $subjectId) {
@@ -222,7 +252,7 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             }
 
             DB::beginTransaction();
-            $delete= CourseSubject::where('course_id', $courseId)->delete();
+            $delete = CourseSubject::where('course_id', $courseId)->delete();
             $create = CourseSubject::insert($courseSubjects);
             $course = $this->model->find($courseId)->update($courseInput);
             DB::commit();
