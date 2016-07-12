@@ -10,6 +10,8 @@ use Exception;
 use App\Models\UserCourse;
 use App\Models\CourseSubject;
 use Auth;
+use App\Models\Course;
+use DB;
 
 class UserCourseRepository extends BaseRepository implements UserCourseRepositoryInterface
 {

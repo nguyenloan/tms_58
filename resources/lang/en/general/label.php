@@ -64,4 +64,11 @@ return [
     'logout' => 'Logout',
     'manage' => 'Manage',
     'course' => 'Course',
+    'finish_course' => 'Finish Course',
+    'date' => 'Date',
+    'achivement' => 'Achivement',
+    'next_day_plan' => 'Next day plan',
+    'problem' => 'Prolem',
+    'create_daily_report' => 'Create daily report',
+    'daily_report' => 'Daily Report',
 ];

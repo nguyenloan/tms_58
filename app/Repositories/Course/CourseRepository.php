@@ -244,7 +244,7 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         try {
             $courseSubjects = [];
 
-            foreach ($subjectIds as $subjectId) {
+            foreach ($newSubjectIds as $subjectId) {
                 $courseSubjects[] = [
                     'course_id' => $courseId,
                     'subject_id' => $subjectId,
@@ -254,7 +254,7 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             DB::beginTransaction();
             $delete = CourseSubject::where('course_id', $courseId)->delete();
             $create = CourseSubject::insert($courseSubjects);
-            $course = $this->model->find($courseId)->update($courseInput);
+            $course = $this->model->where('id', $courseId)->update($courseInput);
             DB::commit();
 
             return $course;
@@ -262,5 +262,40 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function courseSubject($id)
+    {
+        $course = $this->model->find($id);
+        $courseSubjects = $course->subjects;
+        $subjectIds = [];
+
+        foreach ($courseSubjects as $courseSubject) {
+            $subjectIds[] = $courseSubject->pivot->subject_id;
+        }
+
+        return $subjectIds;
+    }
+
+    public function finishCourse($id)
+    {
+        try {
+            $course = $this->model->find($id);
+            $updateStatus = [
+                'end_date' => date('Y-m-d'),
+                'status' => config('common.user_course.status.finish'),
+            ];
+            $subjectIds = $this->courseSubject($id);
+            DB::beginTransaction();
+            $userCourse = UserCourse::where('course_id', $id)->update($updateStatus);
+            $userSubject = UserSubject::whereIn('subject_id', $subjectIds)->update($updateStatus);
+            DB::commit();
+
+            return $userSubject;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
     }
 }
