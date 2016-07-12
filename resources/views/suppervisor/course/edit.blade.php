@@ -96,6 +96,9 @@
                         <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
                             {{ trans('general/label.back') }}
                         </button>
+                        {!! link_to_action('Suppervisor\CourseController@finishCourse',
+                            trans('general/label.finish_course'), [$course->id], ['class' => 'btn btn-info']
+                        ) !!}
                     </div>
                 </div>
             </div>

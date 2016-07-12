@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.layout')
 
 @section('content')
 <div class="container">
@@ -11,10 +11,19 @@
     </h3>
     <h3>
         <i>{{ trans('settings.supervisor') }}</i>
-        @foreach($course->users as $index => $user)
+        @foreach($supervisors as $index => $supervisor)
             <div class="user" align="left">
                 <span class='badge'>{{ $index + 1 }}</span>
-                <span>{{ $user->name }}</span>
+                <span>{{ $supervisor->name }}</span>
+            </div>
+        @endforeach
+    </h3>
+    <h3>
+        <i>{{ trans('general/label.trainee') }}</i>
+        @foreach($trainees as $index => $trainee)
+            <div class="user" align="left">
+                <span class='badge'>{{ $index + 1 }}</span>
+                <span>{{ $trainee->name }}</span>
             </div>
         @endforeach
     </h3>

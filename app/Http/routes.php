@@ -22,6 +22,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('courses', 'Trainee\CourseController');
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');
+    Route::resource('reports', 'Trainee\ReportController');
+    Route::get('courses/{id}/finishCourse', [
+        'as' => 'admin.courses.finishCourse',
+        'uses' => 'Suppervisor\CourseController@finishCourse'
+    ]);
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('subjects', 'Suppervisor\SubjectController');
         Route::get('courses/addSuppervisor/{id}', 'Suppervisor\CourseController@addSuppervisor');

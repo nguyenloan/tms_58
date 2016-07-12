@@ -106,8 +106,14 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = $this->courseRepository->find($id);
+        $trainees = $course->users->where('role', config('common.user.role.trainee'));
+        $supervisors = $course->users->where('role', config('common.user.role.supervisor'));
 
-        return view('suppervisor.course.show', compact('course'));
+        return view('suppervisor.course.show', [
+            'course' => $course,
+            'trainees' => $trainees,
+            'supervisors' => $supervisors,
+        ]);
     }
 
     /**
@@ -156,7 +162,7 @@ class CourseController extends Controller
                 $oldSubejctIds = request()->get('subjectIds');
             }
 
-            $course = $this->courseRepository->updateCourse($id, $newSubjectIds, $course);
+            $courseUpdate = $this->courseRepository->updateCourse($id, $newSubjectIds, $course);
             session()->flash('message', trans('general/message.update_successfully'));
 
             return response()->json(['success' => true]);
@@ -219,5 +225,16 @@ class CourseController extends Controller
         session()->flash('message', trans('general/message.delete_successfully'));
 
         return response()->json(['success' => true]);
+    }
+
+    public function finishCourse($id)
+    {
+        $finish = $this->courseRepository->finishCourse($id);
+
+        if (!$finish) {
+            return redirect()->route('admin.courses.index')->with('message', trans('general/message.finish_fail'));
+        }
+
+        return redirect()->route('admin.courses.index')->with('message', trans('general/message.finish_successfully'));
     }
 }
