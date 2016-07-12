@@ -42,10 +42,10 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li>
-                            <a href="#" data-toggle="modal" data-target="#login">{{ trans('settings.login') }}</a>
+                            <a href="#" id="login" data-toggle="modal"> {{ trans('settings.login') }} </a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="modal" data-target="#register">{{ trans('settings.register') }}</a>
+                            <a href="#" id="register" data-toggle="modal"> {{ trans('settings.register') }} </a>
                         </li>
                     @else
                         <li class="dropdown">
@@ -69,11 +69,10 @@
             </div>
         </div>
     </nav>
-    @include('auth.login')
-    @include('auth.register')
     @yield('content')
     <!-- JavaScripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/all.js') }}"></script>
 </body>
 </html>

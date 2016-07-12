@@ -63,3 +63,6 @@
     color: rgb(0,0,0);
 }
 
+#login-message, #register-message {
+    display: none;
+}

@@ -181,8 +181,57 @@ $(document).ready(function () {
             },
             success: function (data, status) {
                 window.location.replace($('#btn-editCourse').data('redirect'));
-
             }
+        });
+    });
+
+    $('#login').on('click', function(e) {
+        e.preventDefault();
+        setTimeout(function() {
+            $('#loginModal').modal('show');
+        }, 230);
+    });
+
+    $("form[name='formLogin']").submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: '/login',
+            type: "POST",
+            dataType: 'JSON',
+            data: form.serialize(),
+            success: function(data, status) {
+                if (data.success) {
+                    window.location.assign(data.url);
+                } else {
+                    $('.alert-danger').text(data.messages).show();
+                }
+            },
+        });
+    });
+
+    $('#register').on('click', function(e) {
+        e.preventDefault();
+        setTimeout(function() {
+            $('#registerModal').modal('show');
+        }, 230);
+    });
+
+    $("form[name='formRegister']").submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: '/register',
+            type: "POST",
+            dataType: 'JSON',
+            data: form.serialize(),
+            success: function(data, status) {
+                if (data.success) {
+                    window.location.assign(data.url);
+                } else {
+                    $('.alert-warning').text(data.messages).show();
+                }
+            },
         });
     });
 });
