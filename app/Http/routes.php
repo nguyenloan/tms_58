@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('tasks', 'Suppervisor\TaskController');
         Route::resource('userCourses', 'Suppervisor\UserCourseController');
         Route::resource('trainees', 'Suppervisor\TraineeController');
+        Route::get('subjects/{id}/editTask', 'Suppervisor\SubjectController@editTask');
     });
 });
 

@@ -52,4 +52,52 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
 
         return $data;
     }
+
+    public function addTrainee($traineeIds, $courseId)
+    {
+        $subjectIds = CourseSubject::where('course_id', $courseId)->lists('subject_id');
+        $taskIds = Task::whereIn('subject_id', $subjectIds)->lists('id');
+        $userSubjects = [];
+        $userTasks = [];
+        $userCourses = [];
+
+        foreach ($traineeIds as $traineeId) {
+            $userCourses[] = [
+                'user_id' => $traineeId,
+                'course_id' => $courseId,
+                'start_date' => date("Y-m-d"),
+                'status' => config('common.user_course.status.start'),
+            ];
+
+            foreach ($subjectIds as $subjectId) {
+                $userSubjects[] = [
+                    'user_id' => $traineeId,
+                    'subject_id' => $subjectId,
+                    'status' => config('common.user_course.status.start'),
+                ];
+            }
+
+            foreach ($taskIds as $taskId) {
+                $userTasks[] = [
+                    'user_id' => $traineeId,
+                    'task_id' => $taskId,
+                    'status' => config('common.user_course.status.start'),
+                ];
+            }
+        }
+
+        try {
+            DB::beginTransaction();
+            $createUserCourse = $this->model->insert($userCourses);
+            $createUserSubject = UserSubject::insert($userSubjects);
+            $createUserTask = UserTask::insert($userTasks);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+    public function ab(){
+        return 'aaaaaa';
+    }
 }

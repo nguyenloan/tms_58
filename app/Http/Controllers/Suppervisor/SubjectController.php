@@ -90,17 +90,11 @@ class SubjectController extends Controller
     public function show($id)
     {
         $subject = $this->subjectRepository->show($id);
-        session()->flash('subjectId', $id);
 
-        if (!count($subject['tasks'])) {
-
-            return view('suppervisor.subject.show', [
-                'subject' => $subject,
-                'message' => trans('general/message.item_not_exist')
-            ]);
-        }
-
-        return view('suppervisor.subject.show', ['subject' => $subject]);
+        return view('suppervisor.subject.show', [
+            'subject' => $subject,
+            'message' => count($subject['tasks']) ? '' : trans('general/message.item_not_exist'),
+        ]);
     }
 
     /**
@@ -170,5 +164,16 @@ class SubjectController extends Controller
         session()->flash('success', trans('general/message.delete_successfully'));
 
         return response()->json(['success' => true]);
+    }
+
+    public function editTask($id)
+    {
+        $subject = $this->subjectRepository->show($id);
+        session()->flash('subjectId', $id);
+
+        return view('suppervisor.subject.editTask', [
+            'subject' => $subject,
+            'message' => count($subject['tasks']) ? '' : trans('general/message.item_not_exist'),
+        ]);
     }
 }

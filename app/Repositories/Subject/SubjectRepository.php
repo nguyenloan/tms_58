@@ -79,19 +79,14 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
     public function delete($ids)
     {
         try {
+            $taskIds = Task::whereIn('subject_id', $ids)->lists('id');
+
             DB::beginTransaction();
+            Task::whereIn('subject_id', $ids)->delete();
+            UserTask::whereIn('task_id', $taskIds)->delete();
+            UserSubject::whereIn('subject_id', $ids)->delete();
+            CourseSubject::where('subject_id', $ids)->delete();
             $data = $this->model->destroy($ids);
-
-            if (!$data) {
-                throw new Exception(trans('general/message.delete_error'));
-            }
-
-            if (is_array($ids)) {
-                $task = Task::whereIn('subject_id', $ids)->delete();
-            } else {
-                $task = Task::where('subject_id', $ids)->delete();
-            }
-
             DB::commit();
 
             return $data;

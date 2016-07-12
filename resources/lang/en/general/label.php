@@ -71,4 +71,5 @@ return [
     'problem' => 'Prolem',
     'create_daily_report' => 'Create daily report',
     'daily_report' => 'Daily Report',
-];
+    'edit_task' => 'Edit Task',
+ ];

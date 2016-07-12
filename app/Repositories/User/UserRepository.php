@@ -68,7 +68,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $course = Course::findOrFail($courseId);
         $userCourse = $course->users->lists('id');
-        $data = $this->model->where('role', User::ROLE_SUPERVISOR)
+        $data = $this->model->where('role', config('common.user.role.supervisor'))
             ->whereNotIn('id', $userCourse)->lists('name','id');
 
         return $data;
@@ -78,11 +78,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $course = Course::findOrFail($courseId);
         $userCourse = $course->users->lists('id');
-        $role = config('common.user.role.trainee');
-
         $limit = isset($options['limit']) ? $options['limit'] : config('common.base_repository.limit');
         $order = isset($options['order']) ? $options['order'] : config('common.base_repository.order_by');
-        $data = $this->model->where('role', $role)
+        $data = $this->model->where('role', config('common.user.role.trainee'))
             ->whereNotIn('id', $userCourse)
             ->orderBy($order['key'], $order['aspect'])
             ->paginate($limit);

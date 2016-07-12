@@ -14,7 +14,7 @@
                 <div class="page-content">
                     @include('common.error')
                     {!! Form::open([
-                        'method' => 'POST',
+                        'method' => 'PUT',
                         'route' => ['admin.tasks.update', $task->id]
                     ]) !!}
                         {{ Form::hidden('subjectId', session()->get('subjectId')) }}
