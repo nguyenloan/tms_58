@@ -105,5 +105,24 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
 
         return $data;
     }
+
+    public function addSuperOnSubject($input)
+    {
+        $data = UserSubject::create($input);
+
+        if (!$data) {
+            throw new Exception(trans('general/message.create_error'));
+        }
+
+        return $data;
+    }
+
+    public function taskOfSubject($courseId)
+    {
+        $subjectOfCourse = CourseSubject::where('course_id', $courseId)->lists('subject_id');
+        $taskSubject = Task::whereIn('subject_id', $subjectOfCourse)->lists('id');
+
+        return $taskSubject;
+    }
 }
 

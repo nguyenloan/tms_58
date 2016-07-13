@@ -120,4 +120,15 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
             throw $e;
         }
     }
+
+    public function addUserTask($input)
+    {
+        $data = UserTask::create($input);
+
+        if (!$data) {
+            throw new Exception(trans('general/message.create_error'));
+        }
+
+        return $data;
+    }
 }

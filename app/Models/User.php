@@ -8,6 +8,7 @@ use App\Models\Subject;
 use App\Models\Task;
 use App\Models\DailyReport;
 use App\Models\Activity;
+use Hash;
 
 class User extends Authenticatable
 {
@@ -58,6 +59,11 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role == User::ROLE_SUPERVISOR;
+        return $this->role == config('common.user.role.supervisor');
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
