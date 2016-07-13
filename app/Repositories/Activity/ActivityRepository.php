@@ -54,13 +54,20 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
 
     public function checkDuplicatedEvent($input)
     {
+        $filter = [
+            'user_id' => Auth::user()->id,
+            'type' => $input['type'],
+            'course_id' => $input['course_id'],
+        ];
+
         if (isset($input['subject_id'])) {
-            $userActivity = $this->model->where(['user_id' => Auth::user()->id, 'subject_id' => $input['subject_id']])->count();
+            $filter['subject_id'] = $input['subject_id'];
+            $userActivity = $this->model->where($filter)->count();
         } else {
-            $userActivity = $this->model->where(['user_id' => Auth::user()->id, 'course_id' => $input['course_id']])->count();
+            $userActivity = $this->model->where($filter)->count();
         }
 
-        if ($userActivity > config('common.user_course.activity_quality')) {
+        if ($userActivity) {
             throw new Exception(trans('general/message.duplicated_event'));
         }
     }

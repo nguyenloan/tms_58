@@ -182,12 +182,13 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         foreach ($users as $key => $user) {
             $userTaskCount = 0;
             $users[$key]['completed'] = 0;
+            $userTasks = $user->tasks()->whereIn('subject_id', $subjectIds)->get();
 
-            if (count($user->tasks)) {
-                foreach ($user->tasks as $task) {
-                    $userTaskCount += $task->pivot->status;
+            if (count($userTasks)) {
+                foreach ($userTasks as $userTask) {
+                    $userTaskCount += $userTask->pivot->status;
                 }
-                $users[$key]['completed'] = ($userTaskCount / $taskCount) * 100;
+                $users[$key]['completed'] = round(($userTaskCount / $taskCount) * 100);
             }
 
             if ($userTaskCount == $taskCount) {
@@ -195,7 +196,6 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             }
 
         }
-
         $userCount = count($users);
         $data = [
             'users' => $users,
@@ -243,17 +243,54 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
     {
         try {
             $courseSubjects = [];
+            $userSubject = [];
+            $userTask = [];
+            $oldSubjectsInCourse = CourseSubject::where('course_id', $courseId)->lists('subject_id');
+            $deletedSubjects = $oldSubjectsInCourse->diff($newSubjectIds);
+            $newSubjects = collect($newSubjectIds)->diff($oldSubjectsInCourse);
+            $tasks = Task::whereIn('subject_id', $newSubjects)->lists('id');
+            $trainees = UserCourse::where('course_id', $courseId)->lists('user_id');
 
-            foreach ($newSubjectIds as $subjectId) {
-                $courseSubjects[] = [
-                    'course_id' => $courseId,
-                    'subject_id' => $subjectId,
-                ];
+            if (count($newSubjects)) {
+                foreach ($newSubjects as $subjectId) {
+                    $courseSubjects[] = [
+                        'course_id' => $courseId,
+                        'subject_id' => $subjectId,
+                    ];
+                    foreach ($trainees as $trainee) {
+                        $userSubject[] = [
+                            'user_id' => $trainee,
+                            'subject_id' => $subjectId,
+                            'status' => config('common.subject.status.start'),
+                        ];
+                    }
+                }
+            }
+
+            if (count($tasks)) {
+                foreach ($tasks as $task) {
+                    foreach ($trainees as $trainee) {
+                        $userTask[] = [
+                            'user_id' => $trainee,
+                            'task_id' => $task,
+                            'status' => config('common.subject.status.start'),
+                        ];
+                    }
+                }
             }
 
             DB::beginTransaction();
-            $delete = CourseSubject::where('course_id', $courseId)->delete();
-            $create = CourseSubject::insert($courseSubjects);
+            if (count($deletedSubjects)) {
+                CourseSubject::whereIn('subject_id', $deletedSubjects)->delete();
+                UserSubject::whereIn('subject_id', $deletedSubjects)->delete();
+                $deletedTasks = Task::whereIn('subject_id', $deletedSubjects)->lists('id');
+                UserTask::whereIn('task_id', $deletedTasks)->delete();
+            }
+
+            CourseSubject::insert($courseSubjects);
+            UserSubject::insert($userSubject);
+            UserTask::insert($userTask);
+
             $course = $this->model->where('id', $courseId)->update($courseInput);
             DB::commit();
 

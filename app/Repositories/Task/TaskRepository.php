@@ -21,16 +21,16 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
         $this->model = $task;
     }
 
-    public function updateTaskStatus($input, $ids)
+    public function updateTaskStatus($ids)
     {
+        $input = ['status' => config('common.user_task.status.finish')];
+
         if (is_array($ids)) {
-            foreach ($ids as $key => $id) {
-                $data = UserTask::where('id', $id)->update($input[$key]);
-            }
+            $data = UserTask::whereIn('id', $ids)->update($input);
             $userTask = UserTask::find($ids[0]);
         } else {
-            $data = UserTask::where('id', $ids)->update($input);
-            $userTask = UserTask::find($ids);
+            $data = UserTask::where(['task_id' => $ids, 'user_id' => Auth::user()->id])->update($input);
+            $userTask = UserTask::where(['task_id' => $ids, 'user_id' => Auth::user()->id])->first();
         }
 
         if (!$data) {
@@ -59,7 +59,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
             event(new SubjectActivity($eventData));
         }
 
-        return $data;
+        return $task;
     }
 
     public function find($id = null)
