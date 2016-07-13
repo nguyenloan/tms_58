@@ -42,7 +42,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-
 Route::group(['middleware' => 'web'], function() {
     Route::post('login', ['as' => 'login', 'uses' => 'UserController@login']);
     Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);

@@ -101,7 +101,4 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
             throw $e;
         }
     }
-    public function ab(){
-        return 'aaaaaa';
-    }
 }

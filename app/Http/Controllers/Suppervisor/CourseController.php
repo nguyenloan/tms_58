@@ -11,12 +11,14 @@ use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use App\Repositories\CourseSubject\CourseSubjectRepositoryInterface;
+use App\Repositories\Task\TaskRepositoryInterface;
 use App\Http\Requests\AddSuppervisorRequest;
 use Exception;
 use App\Models\Course;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\CourseSubject;
+use App\Models\UserSubject;
 use Collection;
 
 class CourseController extends Controller
@@ -25,18 +27,21 @@ class CourseController extends Controller
     private $userRepository;
     private $subjectRepository;
     private $courseSubjectRepository;
+    private $taskRepository;
 
     public function __construct(
         CourseRepositoryInterface $courseRepository,
         UserRepositoryInterface $userRepository,
         SubjectRepositoryInterface $subjectRepository,
-        CourseSubjectRepositoryInterface $courseSubjectRepository
+        CourseSubjectRepositoryInterface $courseSubjectRepository,
+        TaskRepositoryInterface $taskRepository
     )
     {
         $this->courseRepository = $courseRepository;
         $this->userRepository = $userRepository;
         $this->subjectRepository = $subjectRepository;
         $this->courseSubjectRepository = $courseSubjectRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     /**
@@ -106,8 +111,8 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = $this->courseRepository->find($id);
-        $trainees = $course->users->where('role', config('common.user.role.trainee'));
-        $supervisors = $course->users->where('role', config('common.user.role.supervisor'));
+        $trainees = $course->users()->where('role', config('common.user.role.trainee'))->get();
+        $supervisors = $course->users()->where('role', config('common.user.role.supervisor'))->get();
 
         return view('suppervisor.course.show', [
             'course' => $course,
@@ -185,13 +190,34 @@ class CourseController extends Controller
             'user_id' => $request->user_id,
             'course_id' => $request->course_id
         ];
+        $subjectsOfCourse = $this->courseRepository->courseSubject($request->course_id);
 
         try {
             $data = $this->courseRepository->addSuppervisor($newSuppervisor);
+            foreach ($subjectsOfCourse as $subjectOfCourse) {
+                $newSuper = [
+                    'user_id' => $request->user_id,
+                    'subject_id' => $subjectOfCourse,
+                    'status' => config('common.subject.status.start'),
+                    'start_date' => date("Y-m-d H:i:s"),
+                ];
+                $addSuper = $this->subjectRepository->addSuperOnSubject($newSuper);
+            }
+            $taskIds = $this->subjectRepository->taskOfSubject($request->course_id);
+            foreach ($taskIds as $taskId) {
+                $dataTask = [
+                    'user_id' => $request->user_id,
+                    'task_id' => $taskId,
+                    'status' => config('common.subject.status.start'),
+                    'start_date' => date("Y-m-d H:i:s"),
+                ];
+                $newUserTask = $this->taskRepository->addUserTask($dataTask);
+            }
 
             return redirect()->route('admin.courses.index')->with([
                 'message' => trans('settings.create_success')
             ]);
+
         } catch (Exception $e) {
             return redirect()->route('admin.courses.index')->withError($e->getMessage());
         }

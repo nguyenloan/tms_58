@@ -70,24 +70,4 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-
-    protected function getLogin()
-    {
-        return view('auth.login');
-    }
-
-    protected function postLogin(LoginRequest $request)
-    {
-        $auth = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
-        $remember = $request->remember;
-
-        if (Auth::attempt($auth, $remember)) {
-            return redirect()->route('home');
-        } else {
-            return redirect()->route('getLogin');
-        }
-    }
 }
