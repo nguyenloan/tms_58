@@ -30,7 +30,7 @@ class ReportController extends Controller
 
         return view('daily_report.index', [
             'reports' => $reports,
-            'message' => count($reports) ? '' : trans('general/message.items_not_exist'),
+            'message' => count($reports) ? '' : trans('general/message.item_not_exist'),
         ]);
     }
 
@@ -61,10 +61,16 @@ class ReportController extends Controller
             'problem' => $request->problem,
         ];
 
-        $currentDate = new DateTime();
-        $diffDay = $reportLast->created_at->diff($currentDate);
+        if ($reportLast) {
+            $currentDate = new DateTime();
+            $diffDay = $reportLast->created_at->diff($currentDate);
 
-        if ($diffDay->days) {
+            if ($diffDay->days) {
+                $report = $this->reportRepository->store($report);
+
+                return redirect()->route('reports.index')->with('general/message.create_report_successfully');
+            }
+        } else {
             $report = $this->reportRepository->store($report);
 
             return redirect()->route('reports.index')->with('general/message.create_report_successfully');

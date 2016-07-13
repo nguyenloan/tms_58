@@ -12,7 +12,7 @@
                     <button
                         class="btn btn-info btn-header"
                         data-check="{{ trans('general/message.alert_add_trainee') }}"
-                        data-url="{{ route('admin.courses.putFinishCourse', ['id' => $course->id]) }}"
+                        data-url="{{ route('courses.putFinishCourse', ['id' => $course->id]) }}"
                         id="btn-finish">
                             {{ trans('general/label.finish_course') }}
                     </button>
