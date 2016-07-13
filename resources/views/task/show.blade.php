@@ -15,9 +15,10 @@
             </div>
             <div class='panel-body'>
                 <div class="task-description">{{ $task['description'] }}</div>
-                <a class="btn btn-default" href="{{ route('tasks.update', ['id' => $task['id']]) }}">
-                    {{ trans('general/label.finish') }}
-                </a>
+                {!! Form::open(['route' => ['tasks.update', $task['id']], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+                    {!! Form::hidden('id', $task['id']) !!}
+                    {!! Form::submit(trans('general/label.finish'), ['class' => 'btn btn-default']) !!}
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

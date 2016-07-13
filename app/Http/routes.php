@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/courses/{id}/trainees', ['as' => 'courses.trainees', 'uses' => 'Trainee\CourseController@trainees']);
     Route::get('/courses/{id}/enroll', ['as' => 'courses.enroll', 'uses' => 'Trainee\CourseController@enroll']);
     Route::get('calendar', ['as' => 'calendar', 'uses' => 'UserController@calendarUser']);
+    Route::put('task/ajax-update', ['as' => 'tasks.ajax-update', 'uses' => 'Trainee\TaskController@ajaxUpdate']);
     Route::get('task/{id}', ['as' => 'task', 'uses' => 'Trainee\SubjectController@subjectTask']);
     Route::resource('courses', 'Trainee\CourseController');
     Route::resource('subjects', 'Trainee\SubjectController');

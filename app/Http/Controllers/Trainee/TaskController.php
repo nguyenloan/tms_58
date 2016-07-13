@@ -23,28 +23,30 @@ class TaskController extends Controller
 
             return view('task.show', compact('task'));
         } catch (Exception $ex) {
-            return redirect()->route('subjects.index')->withError($ex->getMessage());
+            return redirect()->route('courses.index')->withError($ex->getMessage());
         }
     }
 
-    public function update(Request $request, $ids)
+    public function update(Request $request, $id)
     {
-        if (request()->has('ids')) {
-            $ids = request()->get('ids');
-            foreach ($ids as $key => $id) {
-                $input[$key] = ['status' => config('common.user_task.status.finish'), 'id' => $id];
-            }
-        } else {
-            $input = ['status' => config('common.user_task.status.finish'), 'id' => $ids];
+        try {
+            $data = $this->taskRepository->updateTaskStatus($id);
+        } catch (Exception $ex) {
+            return redirect()->route('courses.index')->withError($ex->getMessage());
         }
 
+        return redirect()->route('subjects.show', ['id' => $data['subject_id']]);
+    }
+
+    public function ajaxUpdate(){
+        $ids = request()->get('ids');
+
         try {
-            $data = $this->taskRepository->updateTaskStatus($input, $ids);
+            $data = $this->taskRepository->updateTaskStatus($ids);
         } catch (Exception $ex) {
-            return response()->json(['success' => $ex->getMessage()]);
+            return response()->json(['success' => false]);
         }
 
         return response()->json(['success' => true]);
     }
-
 }

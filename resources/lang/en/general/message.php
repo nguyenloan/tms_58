@@ -33,4 +33,8 @@ return [
     'finish_successfully' => 'Finish course successfully',
     'create_report_fail' => 'Create daily report fail',
     'create_report_successfully' => 'Create daily report successfully',
+    'alert_update' => 'Choose item before deleting',
+    'update_error' => 'Error in update process',
+    'create_error' => 'Error in create process',
+    'delete_error' => 'Error in delete process',
 ];

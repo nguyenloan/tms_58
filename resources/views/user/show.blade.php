@@ -47,9 +47,11 @@
                                             <div class="subject">
                                                 <span class="subject-name">{{ $subject['name'] }}</span>
                                                 @if ($subject['status'])
-                                                    <button class="btn btn-success btn-subject-status">{{ trans('finish') }}</button>
+                                                    <button class="btn btn-success btn-subject-status">{{ trans('general/label.finish') }}</button>
                                                 @else
-                                                    <a href="{{ route('subjects.show', ['id' => $subject['subject_id']]) }}" class="btn btn-warning btn-subject-status">{{ trans('training') }}</a>
+                                                    <a href="{{ route('subjects.show', ['id' => $subject['subject_id']]) }}" class="btn btn-warning btn-subject-status">
+                                                        {{ trans('general/label.training') }}
+                                                    </a>
                                                 @endif
                                             </div>
                                         @endforeach

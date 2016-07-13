@@ -44,6 +44,7 @@
 .menu ul li {
     border-left: solid 1px #ebe4dd;
 }
+
 .menu ul li:last-child {
     border-right: solid 1px #ebe4dd;
 }
@@ -53,16 +54,22 @@
     width: 200px;
 }
 
-#left-sidebar{
+#left-sidebar {
     margin-top: 50px;
 }
 
 .title {
     font-style: italic;
     font-weight: bold;
-    color: rgb(0,0,0);
+    color: rgb(0, 0, 0);
 }
 
 #login-message, #register-message {
     display: none;
+}
+
+.required:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
 }
