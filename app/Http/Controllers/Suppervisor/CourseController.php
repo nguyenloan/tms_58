@@ -62,7 +62,7 @@ class CourseController extends Controller
 
         return view('suppervisor.course.create', [
             'subjects' => $subjects,
-            'message' => (!count($subjects)) ? trans('general/message.items_not_exist') : ''
+            'message' => count($subjects) ? '' : trans('general/message.items_not_exist'),
         ]);
     }
 

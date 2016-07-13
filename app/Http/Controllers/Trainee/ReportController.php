@@ -29,7 +29,7 @@ class ReportController extends Controller
 
         return view('daily_report.index', [
             'reports' => $reports,
-            'message' => (!count($reports)) ? trans('general/message.items_not_exist') : ''
+            'message' => count($reports) ? '' : trans('general/message.items_not_exist'),
         ]);
     }
 

@@ -51,7 +51,7 @@ class UserCourseController extends Controller
         return view('suppervisor.user_course.add_trainee', [
             'listTrainees' => $listTrainees,
             'course' => $course,
-            'message' => (!count($listTrainees)) ? trans('general/message.item_not_exist') : ''
+            'message' => count($listTrainees) ? '' : trans('general/message.item_not_exist'),
         ]);
     }
 
@@ -64,19 +64,14 @@ class UserCourseController extends Controller
     public function store(Request $request)
     {
         $userCourses = [];
+        $courseId = session()->get('courseId');
+
         if (request()->has('ids')) {
             $traineeIds = request()->get('ids');
-                foreach ($traineeIds as $traineeId) {
-                    $userCourses[] = [
-                        'user_id' => $traineeId,
-                        'course_id' => session()->get('courseId'),
-                        'start_date' => date("Y-m-d"),
-                        'status' => config('common.user_course.status.start'),
-                    ];
-                }
         }
+
         try {
-            $dataCourse = $this->userCourseRepository->store($userCourses);
+            $dataCourse = $this->userCourseRepository->addTrainee($traineeIds, $courseId);
 
             return response()->json(['success' => true]);
         } catch (Exception $ex) {

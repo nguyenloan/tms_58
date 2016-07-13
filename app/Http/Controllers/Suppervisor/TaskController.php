@@ -45,14 +45,10 @@ class TaskController extends Controller
      */
     public function store(CreateTaskRequest $request)
     {
-        $task = [
-            'subject_id' => $request->subjectId,
-            'name' => $request->name,
-            'description'=> $request->description,
-        ];
+
 
         try {
-            $task = $this->taskRepository->store($task);
+            $task = $this->taskRepository->addTask($request);
 
             return redirect()->action('Suppervisor\SubjectController@show', [$request->subjectId])->with([
                 'message'=> trans('general/message.create_task_success')
@@ -88,7 +84,7 @@ class TaskController extends Controller
                 'task' => $taskData,
             ]);
         } catch (Exception $e) {
-            return redirect()->action('Suppervisor\SujectController@show', [$request->subjectId])->withError($e->getMessage());
+            return redirect()->action('Suppervisor\SubjectController@show', [$request->subjectId])->withError($e->getMessage());
         }
     }
 
@@ -110,7 +106,7 @@ class TaskController extends Controller
         try {
             $taskUpdate = $this->taskRepository->update($taskInput, $id);
 
-            return redirect()->action('Supervisor\SubjectController@show', [$request->subjectId])->with([
+            return redirect()->action('Suppervisor\SubjectController@show', [$request->subjectId])->with([
                 'message' => trans('general/message.update_task_successfully')
             ]);
         } catch (Exception $e) {

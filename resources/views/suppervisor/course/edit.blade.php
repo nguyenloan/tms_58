@@ -6,16 +6,28 @@
         <div class="row">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h2>{{ trans('settings.edit_course') }}</h2>
-                    <a href="{{ route('admin.courses.trainee-progress', ['id' => $course->id]) }}" class="btn btn-default btn-lg btn-header" id="trainee-progress">
-                        {{ trans('general/label.trainee_progress') }}
-                    </a>
-                    <button type="submit" class="btn btn-default btn-lg btn-header">
-                        {{ trans('general/label.save') }}
+                    {{ trans('settings.edit_course') }}
+                </div>
+                <div class="col-md-12" align="right">
+                    <button
+                        class="btn btn-info"
+                        data-check="{{ trans('general/message.alert_add_subject') }}"
+                        data-url="{{ route('admin.courses.update', ['id' => $course->id]) }}"
+                        data-redirect="{{ route('admin.courses.index') }}"
+                        id="btn-editCourse">
+                            {{ trans('general/label.save') }}
                     </button>
-                    <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
+                    <button type="button" class="btn btn-info" id="btn-back">
                         {{ trans('general/label.back') }}
                     </button>
+                    {!! link_to_action('Suppervisor\CourseController@finishCourse',
+                        trans('general/label.finish_course'),
+                        [$course->id],
+                        ['class' => 'btn btn-info']
+                    ) !!}
+                    <a href="{{ route('admin.courses.trainee-progress', ['id' => $course->id]) }}" class="btn btn-info" id="trainee-progress">
+                        {{ trans('general/label.trainee_progress') }}
+                    </a>
                 </div>
                 <div class="page-content">
                     @include('common.error')
@@ -83,22 +95,6 @@
                             </tbody>
                         </table>
                         {!! $subjects->render() !!}
-                    </div>
-                    <div class="row">
-                        <button
-                            class="btn btn-info"
-                            data-check="{{ trans('general/message.alert_add_subject') }}"
-                            data-url="{{ route('admin.courses.update', ['id' => $course->id]) }}"
-                            data-redirect="{{ route('admin.courses.index') }}"
-                            id="btn-editCourse">
-                                {{ trans('general/label.save') }}
-                        </button>
-                        <button type="button" class="btn btn-default btn-lg btn-header" id="btn-back">
-                            {{ trans('general/label.back') }}
-                        </button>
-                        {!! link_to_action('Suppervisor\CourseController@finishCourse',
-                            trans('general/label.finish_course'), [$course->id], ['class' => 'btn btn-info']
-                        ) !!}
                     </div>
                 </div>
             </div>

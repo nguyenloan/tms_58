@@ -83,4 +83,41 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 
         return $data;
     }
+
+    public function addTask($request)
+    {
+        $subjectId = $request->subjectId;
+        $task = [
+            'subject_id' => $subjectId,
+            'name' => $request->name,
+            'description'=> $request->description,
+        ];
+
+        try {
+            $userIds = UserSubject::where('subject_id', $subjectId)->lists('user_id');
+            DB::beginTransaction();
+            $createTask = Task::create($task);
+            $taskId = $createTask->id;
+            $userTasks = [];
+
+            if (count($userIds)) {
+                foreach ($userIds as $userId) {
+                    $userTasks[] = [
+                        'user_id' => $userId,
+                        'task_id' => $taskId,
+                        'status' => config('common.user_course.status.start'),
+                    ];
+                }
+
+                $userTask = UserTask::insert($userTasks);
+            }
+
+            DB::commit();
+
+            return $createTask;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }

@@ -217,19 +217,19 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
     public function delete($ids)
     {
         try {
+            $userIds = UserCourse::whereIn('course_id', $ids)->lists('user_id');
+            $subjectIds = CourseSubject::whereIn('course_id', $ids)->lists('subject_id');
+
+            if (count($subjectIds)) {
+                $taskIds = Task::whereIn('subject_id', $subjectIds)->lists('id');
+            }
+
             DB::beginTransaction();
+            UserTask::whereIn('task_id', $taskIds)->delete();
+            UserSubject::whereIn('user_id', $userIds)->whereIn('subject_id', $subjectIds)->delete();
+            UserCourse::whereIn('course_id', $ids)->delete();
+            CourseSubject::whereIn('course_id', $ids)->delete();
             $data = $this->model->destroy($ids);
-
-            if (!$data) {
-                throw new Exception(trans('general/message.delete_error'));
-            }
-
-            if (is_array($ids)) {
-                $courseSubject = CourseSubject::whereIn('course_id', $ids)->delete();
-            } else {
-                $courseSubject = CourseSubject::where('course_id', $ids)->delete();
-            }
-
             DB::commit();
 
             return $data;
@@ -303,13 +303,7 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
 
     public function courseSubject($id)
     {
-        $course = $this->model->find($id);
-        $courseSubjects = $course->subjects;
-        $subjectIds = [];
-
-        foreach ($courseSubjects as $courseSubject) {
-            $subjectIds[] = $courseSubject->pivot->subject_id;
-        }
+        $subjectIds = CourseSubject::where('course_id', $id)->lists('subject_id');
 
         return $subjectIds;
     }
@@ -322,13 +316,22 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
                 'end_date' => date('Y-m-d'),
                 'status' => config('common.user_course.status.finish'),
             ];
+            $updateTask = [
+                'status' => config('common.user_course.status.finish'),
+            ];
             $subjectIds = $this->courseSubject($id);
+
+            if (count($subjectIds)) {
+                $taskIds = Task::whereIn('subject_id', $subjectIds)->lists('id');
+            }
+
             DB::beginTransaction();
             $userCourse = UserCourse::where('course_id', $id)->update($updateStatus);
-            $userSubject = UserSubject::whereIn('subject_id', $subjectIds)->update($updateStatus);
+            UserSubject::whereIn('subject_id', $subjectIds)->update($updateStatus);
+            UserTask::whereIn('task_id', $taskIds)->update($updateTask);
             DB::commit();
 
-            return $userSubject;
+            return $userCourse;
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;

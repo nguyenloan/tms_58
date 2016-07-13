@@ -4,12 +4,13 @@
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-11">
+            <div class="col-lg-12">
                 <div class="page-header">
-                    <h2>{{ trans('general/label.update_subject') }}</h2><br/>
-                    <button type="button" class="btn btn-back btn-info" id="btn-back">
+                    <h2>{{ trans('general/label.update_subject') }}</h2>
+                    <button type="button" class="btn btn-info btn-header" id="btn-back">
                         {{ trans('general/label.back') }}
                     </button>
+                    {{ link_to_action('Suppervisor\SubjectController@editTask', trans('general/label.edit_task'), [$subject->id], ['class' => 'btn btn-info btn-header']) }}
                 </div>
                 <div class="page-content">
                     @include('common.error')
