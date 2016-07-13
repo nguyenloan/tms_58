@@ -308,10 +308,9 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         return $subjectIds;
     }
 
-    public function finishCourse($id)
+    public function finishCourse($userIds, $id)
     {
         try {
-            $course = $this->model->find($id);
             $updateStatus = [
                 'end_date' => date('Y-m-d'),
                 'status' => config('common.user_course.status.finish'),
@@ -326,9 +325,15 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             }
 
             DB::beginTransaction();
-            $userCourse = UserCourse::where('course_id', $id)->update($updateStatus);
-            UserSubject::whereIn('subject_id', $subjectIds)->update($updateStatus);
-            UserTask::whereIn('task_id', $taskIds)->update($updateTask);
+            $userCourse = UserCourse::where('course_id', $id)
+                ->whereIn('user_id', $userIds)
+                ->update($updateStatus);
+            UserSubject::whereIn('subject_id', $subjectIds)
+                ->whereIn('user_id', $userIds)
+                ->update($updateStatus);
+            UserTask::whereIn('task_id', $taskIds)
+                ->whereIn('user_id', $userIds)
+                ->update($updateTask);
             DB::commit();
 
             return $userCourse;

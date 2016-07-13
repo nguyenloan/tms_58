@@ -24,4 +24,14 @@ class ReportRepository extends BaseRepository implements ReportRepositoryInterfa
 
         return $report;
     }
+
+    public function reportLast($userId)
+    {
+        $order = isset($options['order']) ? $options['order'] : config('common.base_repository.order_by');
+        $report = $this->model->where('user_id', $userId)
+            ->orderBy($order['key'], $order['aspect'])
+            ->first();
+
+        return $report;
+    }
 }

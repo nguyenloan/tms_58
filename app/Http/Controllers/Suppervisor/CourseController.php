@@ -12,6 +12,7 @@ use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use App\Repositories\CourseSubject\CourseSubjectRepositoryInterface;
 use App\Repositories\Task\TaskRepositoryInterface;
+use App\Repositories\UserCourse\UserCourseRepositoryInterface;
 use App\Http\Requests\AddSuppervisorRequest;
 use Exception;
 use App\Models\Course;
@@ -28,13 +29,15 @@ class CourseController extends Controller
     private $subjectRepository;
     private $courseSubjectRepository;
     private $taskRepository;
+    private $userCourseRepository;
 
     public function __construct(
         CourseRepositoryInterface $courseRepository,
         UserRepositoryInterface $userRepository,
         SubjectRepositoryInterface $subjectRepository,
         CourseSubjectRepositoryInterface $courseSubjectRepository,
-        TaskRepositoryInterface $taskRepository
+        TaskRepositoryInterface $taskRepository,
+        UserCourseRepositoryInterface $userCourseRepository
     )
     {
         $this->courseRepository = $courseRepository;
@@ -42,6 +45,7 @@ class CourseController extends Controller
         $this->subjectRepository = $subjectRepository;
         $this->courseSubjectRepository = $courseSubjectRepository;
         $this->taskRepository = $taskRepository;
+        $this->userCourseRepository = $userCourseRepository;
     }
 
     /**
@@ -67,7 +71,7 @@ class CourseController extends Controller
 
         return view('suppervisor.course.create', [
             'subjects' => $subjects,
-            'message' => count($subjects) ? '' : trans('general/message.items_not_exist'),
+            'message' => count($subjects) ? '' : trans('general/message.item_not_exist'),
         ]);
     }
 
@@ -253,14 +257,29 @@ class CourseController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function finishCourse($id)
+    public function getFinishCourse($id)
     {
-        $finish = $this->courseRepository->finishCourse($id);
+        $users = $this->userCourseRepository->listUser($id);
+        $course = $this->courseRepository->find($id);
 
-        if (!$finish) {
-            return redirect()->route('admin.courses.index')->with('message', trans('general/message.finish_fail'));
+        return view('suppervisor.course.finish_course', [
+            'users' => $users,
+            'course' => $course,
+            'message' => count($users) ? '' : trans('general/message.item_not_exist'),
+        ]);
+    }
+
+    public function putFinishCourse($id)
+    {
+        if (request()->has('ids')) {
+            $userIds = request()->get('ids');
         }
+        try {
+            $finish = $this->courseRepository->finishCourse($userIds, $id);
 
-        return redirect()->route('admin.courses.index')->with('message', trans('general/message.finish_successfully'));
+            return response()->json(['success' => true]);
+        } catch (Exception $e) {
+            return response()->json(['success' => false]);
+        }
     }
 }

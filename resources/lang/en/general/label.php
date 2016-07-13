@@ -65,6 +65,7 @@ return [
     'manage' => 'Manage',
     'course' => 'Course',
     'finish_course' => 'Finish Course',
+    'finish_all' => 'Finish All',
     'date' => 'Date',
     'achivement' => 'Achivement',
     'next_day_plan' => 'Next day plan',
@@ -72,4 +73,6 @@ return [
     'create_daily_report' => 'Create daily report',
     'daily_report' => 'Daily Report',
     'edit_task' => 'Edit Task',
+    'course_name' => 'Name course :',
+    'course_description' => 'Description course :',
  ];
