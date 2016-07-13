@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Subject;
 
+use App\Models\Course;
 use App\Models\CourseSubject;
 use App\Models\Subject;
 use App\Models\User;
@@ -68,6 +69,8 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
 
         $subject['pivot'] = $userSubject;
         $subject['tasks'] = $userTasks->tasks;
+        $courseSubject = CourseSubject::where('subject_id', $subject['id'])->first();
+        $subject['course'] = Course::find($courseSubject['course_id']);
 
         foreach ($subject['tasks'] as $key => $task) {
             $subject['tasks'][$key]['status'] = $this->convertStatus($task->pivot->status);

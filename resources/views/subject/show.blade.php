@@ -9,6 +9,10 @@
     <div class="page-content">
         <div class="panel panel-default">
             <div class="panel-heading">
+                <a href="{{ route('courses.show', ['id' => $subject['course']['id']]) }}">
+                    <span>{{ $subject['course']['name'] }}</span>
+                </a>
+                <i class="glyphicon glyphicon-chevron-right"></i>
                 <a href="{{ route('subjects.show', ['id' => $subject['id']]) }}">
                     <span>{{ $subject['name'] }}</span>
                 </a>
