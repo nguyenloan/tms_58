@@ -9,6 +9,7 @@ use App\Repositories\BaseRepository;
 use Exception;
 use App\Models\UserCourse;
 use App\Models\CourseSubject;
+use App\Models\User;
 use Auth;
 use App\Models\Course;
 use DB;
@@ -100,5 +101,12 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function listUser($courseId)
+    {
+        $userIds = $this->model->where('course_id', $courseId)->where('status', config('common.user_course.status.start'))->lists('user_id');
+        $users = User::whereIn('id', $userIds)->get();
+        return $users;
     }
 }

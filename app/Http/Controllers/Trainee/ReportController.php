@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\ReportRequest;
 use App\Repositories\Report\ReportRepositoryInterface;
 use Auth;
+use DateTime;
 
 class ReportController extends Controller
 {
@@ -51,6 +52,7 @@ class ReportController extends Controller
      */
     public function store(ReportRequest $request)
     {
+        $reportLast = $this->reportRepository->reportLast(Auth::user()->id);
         $report = [
             'user_id' => Auth::user()->id,
             'date' => $request->date,
@@ -59,13 +61,16 @@ class ReportController extends Controller
             'problem' => $request->problem,
         ];
 
-        $report = $this->reportRepository->store($report);
+        $currentDate = new DateTime();
+        $diffDay = $reportLast->created_at->diff($currentDate);
 
-        if (!$report) {
-            return redirect()->route('reports.index')->with('general/message.create_report_fail');
+        if ($diffDay->days) {
+            $report = $this->reportRepository->store($report);
+
+            return redirect()->route('reports.index')->with('general/message.create_report_successfully');
         }
 
-        return redirect()->route('reports.index')->with('general/message.create_report_successfully');
+        return redirect()->route('reports.index')->with('general/message.create_report_fail');
     }
 
     /**

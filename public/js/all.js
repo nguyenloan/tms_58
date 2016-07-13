@@ -234,4 +234,26 @@ $(document).ready(function () {
             },
         });
     });
+
+    $('section').on('click', '#btn-finish', function(event){
+        event.preventDefault();
+        var arr = [];
+        $("input[type='checkbox']:checked").each(function () {
+            arr.push($(this).val())
+        });
+        if (arr.length == 0) {
+            alert($('#btn-finish').data('check'));
+            return false;
+        }
+        $.ajax({
+            type: 'PUT',
+            url: $('#btn-finish').data('url'),
+            data: {
+                ids: arr,
+            },
+            success: function (data, status) {
+                location.reload(true);
+            }
+        });
+    });
 });

@@ -20,7 +20,7 @@
                     <button type="button" class="btn btn-info" id="btn-back">
                         {{ trans('general/label.back') }}
                     </button>
-                    {!! link_to_action('Suppervisor\CourseController@finishCourse',
+                    {!! link_to_action('Suppervisor\CourseController@getFinishCourse',
                         trans('general/label.finish_course'),
                         [$course->id],
                         ['class' => 'btn btn-info']
