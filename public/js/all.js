@@ -78,8 +78,13 @@ $(document).ready(function () {
         parent = $(this).prev();
         newOption = parent.find('.col-md-10').clone();
         parent = parent.prev().find('.col-md-10');
-        no = parent.find('.task-name').last().attr('id').split('-')[1];
-        no = parseInt(no) + 1;
+        no = parent.find('.task-name').last().attr('id');
+        if (no == undefined){
+            no = 1;
+        } else {
+            no = no.split('-')[1];
+            no = parseInt(no) + 1;
+        }
         newOption.find('.task-name').attr({name: 'name-' + no, id: 'name-' + no});
         newOption.find('.task-description').attr({name: 'description-' + no, id: 'description-' + no});
         newOption.find('.task-remove').attr({id: 'remove-' + no});

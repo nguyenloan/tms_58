@@ -9,8 +9,8 @@ return [
     'delete_error' => 'Delete subject fail',
     'create_task_success' => 'Create new task successfully',
     'update_task_successfully' => 'Update task successfully',
-    'start_course_activity' => ':user start the course',
-    'finish_course_activity' => ':user finish the course',
+    'start_course_activity' => ':user start the course :course',
+    'finish_course_activity' => ':user finish the course :course',
     'start_subject_activity' => ':user start the subject :subject',
     'finish_subject_activity' => ':user finish the subject :subject',
     'complete_task_activity' => ':user complete the task :task',
@@ -36,5 +36,4 @@ return [
     'alert_update' => 'Choose item before deleting',
     'update_error' => 'Error in update process',
     'create_error' => 'Error in create process',
-    'delete_error' => 'Error in delete process',
 ];

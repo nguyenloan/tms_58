@@ -74,5 +74,6 @@ return [
     'daily_report' => 'Daily Report',
     'edit_task' => 'Edit Task',
     'course_name' => 'Name course :',
+    'report' => 'Report',
     'course_description' => 'Description course :',
  ];

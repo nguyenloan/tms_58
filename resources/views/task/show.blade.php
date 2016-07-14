@@ -9,6 +9,14 @@
     <div class="page-content">
         <div class="panel panel-default">
             <div class="panel-heading">
+                <a href="{{ route('courses.show', ['id' => $task['course']['id']]) }}">
+                    <span>{{ $task['course']['name'] }}</span>
+                </a>
+                <i class="glyphicon glyphicon-chevron-right"></i>
+                <a href="{{ route('subjects.show', ['id' => $task['subject']['id']]) }}">
+                    <span>{{ $task['subject']['name'] }}</span>
+                </a>
+                <i class="glyphicon glyphicon-chevron-right"></i>
                 <a href="{{ route('tasks.show', ['id' => $task['id']]) }}">
                     <span>{{ $task['name'] }}</span>
                 </a>
