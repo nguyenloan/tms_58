@@ -2,7 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-2 logo">
-                <a href="{{ route('courses.index') }}"><img src="{{ asset('/images/logo.png') }}"/></a>
+                @if (Auth::check())
+                    <a href="{{ route('courses.index') }}"><img src="{{ asset('/images/logo.png') }}"/></a>
+                @else
+                    <a><img src="{{ asset('/images/logo.png') }}"/></a>
+                @endif
             </div>
             <div class="col-sm-10 menu">
                 <ul class="nav navbar-nav">
