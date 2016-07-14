@@ -53,8 +53,12 @@ class SubjectController extends Controller
     }
     public function subjectTask($id)
     {
-        $subjectTask = $this->subjectRepository->userSubject($id);
-        $userCurrent = $this->userRepository->find(Auth::user()->id);
+        try {
+            $subjectTask = $this->subjectRepository->userSubject($id);
+            $userCurrent = $this->userRepository->find(Auth::user()->id);
+        } catch (Exception $e) {
+            return redirect()->route('calendar')->withError($e->getMessage());
+        }
 
         return view('user.task_subject', compact('subjectTask', 'userCurrent'));
     }
