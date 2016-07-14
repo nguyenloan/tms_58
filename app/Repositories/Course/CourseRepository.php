@@ -249,7 +249,9 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             $deletedSubjects = $oldSubjectsInCourse->diff($newSubjectIds);
             $newSubjects = collect($newSubjectIds)->diff($oldSubjectsInCourse);
             $tasks = Task::whereIn('subject_id', $newSubjects)->lists('id');
-            $trainees = UserCourse::where('course_id', $courseId)->lists('user_id');
+            $trainees = UserCourse::where('course_id', $courseId)
+                ->where('status', config('common.user_course.status.start'))
+                ->lists('user_id');
 
             if (count($newSubjects)) {
                 foreach ($newSubjects as $subjectId) {

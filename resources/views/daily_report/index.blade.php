@@ -8,6 +8,7 @@
             {{ trans('general/label.back') }}
         </button>
         <p class="flash alert-info"> {{ $message }}</p>
+        @include('common.message')
     </div>
     <div class="page-content">
         <table class="table table-bordered table-striped table-responsive table-grid">

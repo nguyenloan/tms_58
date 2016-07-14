@@ -22,14 +22,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');
     Route::resource('reports', 'Trainee\ReportController');
-    Route::get('courses/{id}/getFinishCourse', [
-        'as' => 'admin.courses.getFinishCourse',
-        'uses' => 'Suppervisor\CourseController@getFinishCourse'
-    ]);
-    Route::put('courses/putFinishCourse/{id}', [
-        'as' => 'admin.courses.putFinishCourse',
-        'uses' => 'Suppervisor\CourseController@putFinishCourse'
-    ]);
     Route::group(['prefix' => 'admin'], function () {
         Route::resource('subjects', 'Suppervisor\SubjectController');
         Route::get('courses/addSuppervisor/{id}', 'Suppervisor\CourseController@addSuppervisor');
@@ -43,6 +35,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('userCourses', 'Suppervisor\UserCourseController');
         Route::resource('trainees', 'Suppervisor\TraineeController');
         Route::get('subjects/{id}/editTask', 'Suppervisor\SubjectController@editTask');
+        Route::get('courses/{id}/getFinishCourse', [
+            'as' => 'courses.getFinishCourse',
+            'uses' => 'Suppervisor\CourseController@getFinishCourse'
+        ]);
+        Route::put('courses/putFinishCourse/{id}', [
+            'as' => 'courses.putFinishCourse',
+            'uses' => 'Suppervisor\CourseController@putFinishCourse'
+        ]);
     });
 });
 

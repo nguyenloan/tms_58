@@ -60,8 +60,23 @@ class UserCourseRepository extends BaseRepository implements UserCourseRepositor
 
     public function addTrainee($traineeIds, $courseId)
     {
-        $subjectIds = CourseSubject::where('course_id', $courseId)->lists('subject_id');
-        $taskIds = Task::whereIn('subject_id', $subjectIds)->lists('id');
+        $oldSubjectIds = UserSubject::whereIn('user_id', $traineeIds)
+            ->lists('subject_id');
+
+        if (count($oldSubjectIds)) {
+            $subjectIds = CourseSubject::where('course_id', $courseId)
+                ->whereNotIn('id', $oldSubjectIds)
+                ->lists('subject_id');
+        } else {
+            $subjectIds = CourseSubject::where('course_id', $courseId)
+                ->lists('subject_id');
+        }
+
+        if (count($subjectIds)) {
+            $taskIds = Task::whereIn('subject_id', $subjectIds)
+                ->lists('id');
+        }
+
         $userSubjects = [];
         $userTasks = [];
         $userCourses = [];

@@ -16,6 +16,7 @@ use Auth;
 use App\Events\SubjectActivity;
 use Request;
 use App\Models\Subject;
+use DB;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 {
@@ -159,7 +160,9 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
         ];
 
         try {
-            $userIds = UserSubject::where('subject_id', $subjectId)->lists('user_id');
+            $userIds = UserSubject::where('subject_id', $subjectId)
+                ->where('status', config('common.subject.status.start'))
+                ->lists('user_id');
             DB::beginTransaction();
             $createTask = Task::create($task);
             $taskId = $createTask->id;
@@ -170,7 +173,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
                     $userTasks[] = [
                         'user_id' => $userId,
                         'task_id' => $taskId,
-                        'status' => config('common.user_course.status.start'),
+                        'status' => config('common.subject.status.start'),
                     ];
                 }
 
