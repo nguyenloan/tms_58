@@ -13,7 +13,13 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $this->visit('/')
-             ->see('Laravel 5');
+        $user = factory(App\Models\User::class)->make([
+            'name' => 'Abigail',
+            'email' => 'kak@gmail.com',
+            'password' => bcrypt(str_random(10)),
+            'remember_token' => str_random(10),
+            'role' => config('common.user.role.trainee'),
+            'avatar' => config('common.user.default_avatar'),
+        ]);
     }
 }

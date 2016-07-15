@@ -56,4 +56,6 @@ return [
     'description_of_course' => 'Description details of Course',
     'name_of_course' => 'Name Of Course',
     'fails_account' => 'Name or Email have error , Please again !',
+    'register_with' => 'Register with',
+    'login_with' => 'Login with',
 ];

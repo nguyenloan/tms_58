@@ -17,7 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/courses/{id}/enroll', ['as' => 'courses.enroll', 'uses' => 'Trainee\CourseController@enroll']);
     Route::get('calendar', ['as' => 'calendar', 'uses' => 'UserController@calendarUser']);
     Route::put('task/ajax-update', ['as' => 'tasks.ajax-update', 'uses' => 'Trainee\TaskController@ajaxUpdate']);
-    Route::get('task/{id}', ['as' => 'task', 'uses' => 'Trainee\SubjectController@subjectTask']);
+    Route::get('taskSubject/{id}', ['as' => 'taskSubject', 'uses' => 'Trainee\SubjectController@subjectTask']);
     Route::resource('courses', 'Trainee\CourseController');
     Route::resource('subjects', 'Trainee\SubjectController');
     Route::resource('tasks', 'Trainee\TaskController');
@@ -50,4 +50,6 @@ Route::group(['middleware' => 'web'], function() {
     Route::post('login', ['as' => 'login', 'uses' => 'UserController@login']);
     Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
     Route::post('register', ['as' => 'register', 'uses' => 'UserController@register']);
+    Route::get('login/{social}', ['as' => 'login.{social}', 'uses' => 'UserController@redirectToProvider']);
+    Route::get('login/{social}/callback', ['as' => 'login.{social}.callback', 'uses' => 'UserController@handleProviderCallback']);
 });

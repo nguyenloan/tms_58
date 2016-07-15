@@ -4,7 +4,16 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;
                 </button>
-                <h4 class="modal-title">{{ trans('settings.register') }}</h4>
+                <h4 class="modal-title">{{ trans('settings.register_with') }}</h4>
+                <a class="circle facebook" href=" {{ url('login/facebook')}} ">
+                    <i class="fa fa-facebook-square fa-2x"></i>
+                </a>
+                <a class="circle twitter" href=" {{ url('login/twitter')}}">
+                    <i class="fa fa-twitter-square fa-2x"></i>
+                </a>
+                <a class="circle google" href=" {{ url('login/google') }} ">
+                    <i class="fa fa-google-plus-official fa-2x"></i>
+                </a>
             </div>
             <div class="modal-body">
                 {!! Form::open(['route' => 'register', 'name' => 'formRegister', 'method' => 'POST', 'class' => 'form-horizontal']) !!}

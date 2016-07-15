@@ -14,6 +14,7 @@ use App\Http\Requests\RegisterRequest;
 use Response;
 use Requests;
 use App\Models\User;
+use Socialite;
 
 class UserController extends Controller
 {
@@ -139,5 +140,28 @@ class UserController extends Controller
 
             return Response::json(['success' => true, 'url' => route('home')]);
         }
+    }
+
+    public function redirectToProvider($social)
+    {
+        return Socialite::driver($social)->redirect();
+    }
+
+    public function handleProviderCallback($social)
+    {
+        $user = Socialite::driver($social)->user();
+        if ($user) {
+            $authUser = User::where('email', $user->getEmail())->first();
+            if (!$authUser) {
+                $authUser = User::create([
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'avatar' => $user->getAvatar(),
+                    'role' => config('common.user.role.trainee')
+                ]);
+            }
+            Auth::login($authUser);
+        }
+        return redirect()->route('home');
     }
 }

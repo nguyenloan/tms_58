@@ -36,7 +36,7 @@
                                             <th>{{ $subject->end_date}}</th>
                                             <th>
                                                 @if ($subject->status == config('common.subject.status.start'))
-                                                    <a href="{{ route('task', [$subject->id ]) }}"
+                                                    <a href="{{ route('taskSubject', [ $subject->id ]) }}"
                                                         class="btn btn-success">{{ trans('settings.training') }}
                                                     </a>
                                                 @else

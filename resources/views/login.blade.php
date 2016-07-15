@@ -34,6 +34,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 {!! Form::submit(trans('settings.login'), ['class' => 'btn btn-primary']) !!}
                             </div>
+                            <a href="">Register</a>
                         </div>
                     {!! Form::close() !!}
                 </div>
