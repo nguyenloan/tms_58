@@ -55,9 +55,14 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = $this->courseRepository->index('courses');
+        try {
+            $courses = $this->courseRepository->index('courses');
 
-        return view('suppervisor.course.index', $courses);
+            return view('suppervisor.course.index', $courses);
+        } catch (Exception $e) {
+            return redirect()->route('admin.courses.create')->withError($e->getMessage());
+        }
+
     }
 
     /**
@@ -138,7 +143,7 @@ class CourseController extends Controller
             session()->flash('courseId', $id);
             $subjectIds =  $this->courseRepository->subjectIds($id);
 
-            $subjects = $this->subjectRepository->listSubject();
+            $subjects = $this->subjectRepository->listSubject($id);
 
             return view('suppervisor.course.edit', [
                 'course' => $course,

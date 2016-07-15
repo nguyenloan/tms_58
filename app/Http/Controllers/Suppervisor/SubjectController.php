@@ -10,6 +10,7 @@ use Exception;
 use App\Http\Requests\CreateSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Requests;
+use Auth;
 
 class SubjectController extends Controller
 {
@@ -28,9 +29,14 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = $this->subjectRepository->index('subjects');
+        try {
+            $subjects = $this->subjectRepository->index('subjects');
 
-        return view('suppervisor.subject.index', $subjects);
+            return view('suppervisor.subject.index', $subjects);
+        } catch (Exception $e) {
+            return redirect()->route('admin.subjects.create')->withError($e->getMessage());
+        }
+
     }
 
     /**

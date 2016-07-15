@@ -35,13 +35,18 @@ class TraineeController extends Controller
      */
     public function index()
     {
-        $options = [
-            'filter' => ['role' => config('common.user.role.trainee')],
-            'columns' => ['name', 'email', 'role'],
-        ];
-        $trainees = $this->userRepository->index('trainees', $options);
+        try {
+            $options = [
+                'filter' => ['role' => config('common.user.role.trainee')],
+                'columns' => ['name', 'email', 'role'],
+            ];
+            $trainees = $this->userRepository->index('trainees', $options);
 
-        return view('suppervisor.trainee.index', $trainees);
+            return view('suppervisor.trainee.index', $trainees);
+        } catch (Exception $e) {
+            return redirect()->route('admin.trainees.create')->withError($e->getMessage());
+        }
+
     }
 
     /**
