@@ -130,6 +130,8 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
+                'role' => config('common.user.role.trainee'),
+                'avatar' => config('common.user.default_avatar'),
             ];
 
             $authUser = User::create($userRegister);

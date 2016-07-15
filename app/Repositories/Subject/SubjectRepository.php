@@ -99,9 +99,13 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
         }
     }
 
-    public function listSubject()
+    public function listSubject($id = null)
     {
-        $subjectIds = CourseSubject::lists('subject_id');
+        if (!empty($id)) {
+            $subjectIds = CourseSubject::where('course_id', '<>', $id)->lists('subject_id');
+        } else {
+            $subjectIds = CourseSubject::lists('subject_id');
+        }
 
         $limit = isset($options['limit']) ? $options['limit'] : config('common.base_repository.limit');
         $order = isset($options['order']) ? $options['order'] : config('common.base_repository.order_by');
